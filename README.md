@@ -5,7 +5,7 @@
 
 ![Exploded icon layers](assets/social-preview.png)
 
-Design distinctive app icons, explore original directions with image generation, reconstruct clean production layers, and validate the result across Apple platforms.
+Design distinctive app icons through a time-saving approval gate: iterate rapidly on whole-icon concepts, approve one, then reconstruct clean production layers and validate the result across Apple platforms.
 
 This repository contains the installable [`design-app-icons`](skills/design-app-icons/SKILL.md) Codex skill, current Apple platform guidance, a deterministic bitmap preflight tool, and four original image-generated case studies.
 
@@ -14,12 +14,25 @@ This repository contains the installable [`design-app-icons`](skills/design-app-
 ## What makes this different
 
 - **Concept before surface:** start from the app promise and one ownable silhouette.
+- **Approval before production:** iterate on inexpensive flattened concepts and pause for an explicit design lock before generating layers or opening Icon Composer.
 - **Imagegen with boundaries:** use generated bitmaps for fast, original concept exploration—not as fake vector or `.icon` files.
 - **Two production routes:** reconstruct exact SVG geometry, or generate one raster role per image and prove its alpha, alignment, and composite.
 - **Current Liquid Glass workflow:** prepare SVG/PNG layers, use at most four Icon Composer groups, and validate current refraction/specular behavior.
 - **Platform-aware delivery:** distinguish Icon Composer from tvOS/visionOS asset catalogs and exact legacy-art requirements.
 - **Evidence, not vibes:** separate static preflight, Icon Composer, Xcode build, Simulator, device, store, and experiment evidence.
 - **Honest ASO testing:** design meaningful Product Page Optimization hypotheses without promising ranking or conversion lift.
+
+## The smart two-phase workflow
+
+```text
+Brief → whole-icon directions → targeted revisions → explicit approval
+      → SVG/raster layer plan → one role per source → recomposed proof
+      → Icon Composer → Xcode/Simulator → evidence-backed handoff
+```
+
+Before approval, the skill generates or edits only flattened concept masters. Each retained revision gets a stable version, and the prior accepted candidate remains available for comparison. It does not spend time generating transparent components, drawing final SVGs, changing Xcode, or creating Composer evidence for a design that may still be rejected.
+
+After the user says a clear equivalent of “I approve B3,” the skill records the approved artifact, digest, recognition anchor, protected invariants, permitted production translations, and layer plan. It then creates one production role per SVG or PNG, compares the recomposed proof with the approved concept at full size and 32 px, and continues through Composer and platform validation. A material design drift returns to the approval gate rather than being silently introduced during reconstruction.
 
 ## Original example directions
 
@@ -56,7 +69,7 @@ Mood Lantern demonstrates the alternative [layer-first Imagegen workflow](exampl
 Clone a tagged release and run the local installer:
 
 ```bash
-git clone --depth 1 --branch v1.0.0 https://github.com/metaforismo/app-icon-design-skill.git
+git clone --depth 1 --branch v1.1.0 https://github.com/metaforismo/app-icon-design-skill.git
 cd app-icon-design-skill
 ./scripts/install.sh
 ```
@@ -77,6 +90,8 @@ Example requests:
 
 - “Audit this existing iOS icon at small sizes and explain what actually needs redesign.”
 - “Use these screenshots only as style references and generate an original icon.”
+- “Iterate on direction B until I approve it; do not create layers or use Icon Composer before then.”
+- “I approve concept B3. Lock it, create the image layer by layer, and complete the Icon Composer handoff.”
 - “Plan SVG layers for Icon Composer and test Default, Dark, Clear, and Tinted appearances.”
 - “Migrate this Xcode project from `AppIcon.appiconset` to an `.icon` file without losing the old artwork.”
 - “Create three Product Page Optimization icon hypotheses and define what evidence would select a winner.”

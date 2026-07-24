@@ -1,0 +1,36 @@
+schema_version: 1
+status: exploring-not-approved
+concept:
+  id: replace-with-version-id
+  path: replace-with-project-relative-path
+  sha256: null
+approval:
+  explicitly_approved: false
+  approved_at: null
+  evidence_note: replace-with-short-user-approval-summary
+design_lock:
+  product_promise: replace-with-one-line-promise
+  recognition_anchor: replace-with-anchor
+  metaphor: replace-with-metaphor
+  silhouette: replace-with-silhouette-description
+  composition: replace-with-object-relationships-and-optical-center
+  palette:
+    - name: primary
+      value: "#000000"
+  protected_invariants:
+    - replace-with-invariant
+  permitted_production_translations:
+    - remove generation artifacts without changing identity
+    - recreate platform-owned glass, shadow, refraction, and specular effects in Icon Composer
+production_plan:
+  authorized: false
+  layers:
+    - order: 1
+      id: 01-backdrop
+      role: opaque full-canvas backdrop
+      source_decision: svg-or-raster
+      reason: replace-with-reason
+  reapproval_triggers:
+    - changed metaphor or recognition anchor
+    - materially changed silhouette, composition, focal scale, or palette
+    - layer composite no longer matches the approved concept at full size and 32 px

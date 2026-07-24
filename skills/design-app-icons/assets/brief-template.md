@@ -13,6 +13,9 @@
 - Platforms:
 - Minimum releases:
 - Deliverable: concept / bitmap / layers / Icon Composer / Xcode integration
+- Approval state: exploring / explicitly approved / production blocked pending re-approval
+- Approved concept/version:
+- Approved artifact SHA-256:
 - Existing icon:
 - Recognition anchors to preserve:
 - Prohibited changes:
@@ -57,4 +60,7 @@
 - Rationale:
 - Rejected risks:
 - Assumptions:
-
+- Explicit approval recorded: no
+- Approval date:
+- Locked invariants:
+- Production translations permitted:

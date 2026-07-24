@@ -15,9 +15,11 @@
 app-icon/
 ├── brief.md
 ├── provenance.yaml
+├── design-approval.yaml
 ├── concepts/
-│   ├── direction-a.png
-│   └── direction-b.png
+│   ├── direction-a1.png
+│   ├── direction-a2.png
+│   └── direction-b1.png
 ├── production/
 │   ├── source.fig-or-ai-or-sketch
 │   ├── layers/
@@ -36,12 +38,13 @@ app-icon/
     └── status.md
 ```
 
-Use only applicable files. Do not fabricate a `.icon` file when Icon Composer was not used.
+Use only applicable files. Keep `design-approval.yaml` in `exploring-not-approved` state for a concept-only handoff. Do not create production sources or fabricate a `.icon` file when explicit approval and Icon Composer use have not occurred.
 
 ## Icon Composer package
 
 Deliver:
 
+- approved concept and completed `design-approval.yaml`
 - editable vector source
 - exported SVG/PNG layers
 - `.icon` file from Icon Composer
@@ -82,6 +85,7 @@ This is a valid handoff when the user requested ideation rather than platform in
 - Use lowercase hyphenated filenames for exports.
 - Use numeric prefixes for layer z-order.
 - Use stable direction names instead of `final-final-2`.
+- Version concept iterations before approval, for example `direction-a1.png`, `direction-a2.png`, and `direction-b1.png`.
 - Keep platform/appearance in variant filenames, for example `app-icon-ios-dark.png`.
 - Keep generated raw output separate from alpha-normalized candidates and approved production art.
 
@@ -90,6 +94,8 @@ This is a valid handoff when the user requested ideation rather than platform in
 - [ ] Product promise and target platforms recorded
 - [ ] Rights and source roles recorded
 - [ ] Selected direction and rejected risks explained
+- [ ] Explicit approval, approved version, artifact digest, and protected invariants recorded
+- [ ] Production composite compared with the approved concept at full size and 32 px
 - [ ] Final prompt and generation mode recorded
 - [ ] Editable production source present
 - [ ] Unmasked layers exported

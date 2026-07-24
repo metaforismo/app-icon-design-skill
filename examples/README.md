@@ -19,6 +19,8 @@ Workflow used:
 4. Explicitly prohibit copied symbols, compositions, palettes, and brand identity.
 5. Generate one square concept per call using the built-in image-generation tool.
 6. Inspect each output and resize the retained concept master to 1024 × 1024.
-7. Record the prompt, role, rationale, production reconstruction plan, and evidence boundary.
+7. Iterate on the retained whole-icon concept before spending effort on layers.
+8. Record explicit design approval before production reconstruction or Icon Composer.
+9. Record the prompt, role, rationale, production reconstruction plan, and evidence boundary.
 
 Quiet Tide demonstrates deliberate SVG reconstruction and a real Icon Composer/Xcode/Simulator path. Mood Lantern demonstrates the raster layer-first alternative. The other concept masters remain flat PNGs and do not claim production validation.

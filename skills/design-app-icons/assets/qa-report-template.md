@@ -9,6 +9,9 @@
 ## Artifact
 
 - Source:
+- Approved concept/version:
+- Approved artifact SHA-256:
+- Production-fidelity comparison:
 - Dimensions:
 - Color mode:
 - Alpha:
@@ -47,4 +50,3 @@
 - Build log:
 - Simulator screenshots:
 - Device screenshots:
-

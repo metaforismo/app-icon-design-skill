@@ -82,6 +82,30 @@ def validate_skill(result: Result) -> None:
             result.error(f"Missing {script_name}")
     if not (SKILL / "assets" / "layer-composition-template.yaml").is_file():
         result.error("Missing layer-composition-template.yaml")
+    approval_template = SKILL / "assets" / "design-approval-template.yaml"
+    if not approval_template.is_file():
+        result.error("Missing design-approval-template.yaml")
+
+    required_gate_phrases = (
+        "Phase 1 — Explore and iterate",
+        "Gate 1 — Record the approved design",
+        "Phase 2 — Produce after approval",
+        "Exploring — not approved",
+        "Approved — production authorized",
+        "Production blocked — re-approval required",
+    )
+    for phrase in required_gate_phrases:
+        if phrase not in body:
+            result.error(f"SKILL.md is missing approval-gate instruction: {phrase}")
+
+    if approval_template.is_file():
+        approval = yaml.safe_load(approval_template.read_text(encoding="utf-8"))
+        if approval.get("status") != "exploring-not-approved":
+            result.error("design-approval-template.yaml must default to exploring-not-approved")
+        if approval.get("approval", {}).get("explicitly_approved") is not False:
+            result.error("design-approval-template.yaml must default explicitly_approved to false")
+        if approval.get("production_plan", {}).get("authorized") is not False:
+            result.error("design-approval-template.yaml must default production authorization to false")
 
 
 def validate_agent_metadata(result: Result) -> None:
@@ -222,6 +246,7 @@ def validate_repo_hygiene(result: Result) -> None:
         ROOT / ".github" / "workflows" / "validate.yml",
         ROOT / ".github" / "workflows" / "source-freshness.yml",
         ROOT / "docs" / "source-manifest.yaml",
+        ROOT / "docs" / "release-notes-v1.1.0.md",
         ROOT / "scripts" / "check_sources.py",
         ROOT / "scripts" / "install.sh",
         ROOT / "scripts" / "package_skill.py",

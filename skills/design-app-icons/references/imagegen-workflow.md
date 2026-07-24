@@ -6,6 +6,7 @@ Use the built-in `image_gen` tool by default. Use image generation for new raste
 
 - [Input roles](#input-roles)
 - [Concept prompt structure](#concept-prompt-structure)
+- [Approval-gated concept loop](#approval-gated-concept-loop)
 - [Layer-first generation](#layer-first-generation)
 - [Base prompt](#base-prompt)
 - [Style recipes](#style-recipes)
@@ -47,6 +48,21 @@ Avoid: copied reference geometry; tiny detail; stock-logo look; excess glow; ill
 
 The prompt should describe the artwork, not a glossy presentation of an app-icon tile on a desk or wallpaper.
 
+## Approval-gated concept loop
+
+Keep exploration cheap and reversible:
+
+1. Generate flattened whole-icon directions first. Do not generate production layers while the design is unapproved.
+2. Save each retained candidate with a stable version such as `concept-a1.png`, `concept-a2.png`, or `concept-b1.png`.
+3. Show the selected candidate at 1024 px and 32 px. Ask the user to identify what to preserve and the single most important change.
+4. For a revision, prefer built-in Imagegen edit semantics when an existing candidate must remain recognizable. Repeat invariants such as “change only the wave height; preserve silhouette, sun, palette, lighting, and composition.” Generate a new version instead of overwriting the prior candidate.
+5. If an edit drifts, return to the last accepted candidate rather than stacking corrections onto the drifted output.
+6. Mark every candidate `Exploring — not approved` until the user explicitly names the approved version.
+
+Do not interpret “better,” “almost,” or a lack of criticism as approval. Once the user says a clear equivalent of “approve,” “lock,” “this is the one,” or “proceed with this version,” record the approval in `assets/design-approval-template.yaml`; set the approval and production authorization fields to true. Only then plan or generate individual production layers.
+
+If the user asks for the entire workflow upfront, complete the concept comparison and pause at the approval gate. After approval, continue autonomously through faithful layer creation, recomposition, Composer, and requested platform checks. Ask again only when production would visibly change a locked invariant or an external action requires separate authorization.
+
 ## Base prompt
 
 ```text
@@ -63,7 +79,7 @@ Avoid: micro-details, thin lines, generic stock mark, excessive bloom, copied co
 
 ## Layer-first generation
 
-Use this route when the chosen icon needs painterly, tactile, or luminous raster elements that would lose their character if redrawn as simple vectors. It is not automatically better than reconstruction.
+Use this route only after a design is explicitly approved and when the chosen icon needs painterly, tactile, or luminous raster elements that would lose their character if redrawn as simple vectors. It is not automatically better than reconstruction.
 
 ### 1. Freeze a composition contract
 
@@ -73,6 +89,7 @@ Before generating layers, copy `assets/layer-composition-template.yaml` and reco
 - the final bounding box and optical center for each element
 - a shared camera, perspective, material vocabulary, palette, and light direction
 - back-to-front layer order and which layer must be opaque
+- the approved concept path, digest, and locked invariants from `assets/design-approval-template.yaml`
 
 Every generated layer must use that same contract. “Centered” is not precise enough when independently generated objects must align.
 
@@ -118,6 +135,8 @@ Treat its output as an **alpha-normalized candidate**, not a clean or approved p
 
 Composite the alpha-normalized candidates in the intended order before importing them. Compare the result to the approved concept at full size and 32 px. Check silhouettes, seams, occlusion, edge contamination, and whether independent lighting still feels coherent.
 
+Treat small reconstruction corrections as production work, but treat a changed metaphor, silhouette, object relationship, focal scale, or palette as a new design. Return the changed composite to the concept loop and request re-approval before opening Icon Composer.
+
 Use `scripts/compose_raster_layers.py` for deterministic normal-alpha composition on a shared canvas. It embeds sRGB in the flattened proof. Record each candidate’s original alpha bounds, scale factor, final alpha bounds, center offset, and spill heuristic from `prepare_raster_layer.py`; these metrics help locate drift but do not prove visual alignment.
 
 Raster layers may be imported into Icon Composer when their alpha edges and resolution survive review. Reconstruct as SVG when the identity depends on exact curves, symmetry, repeatable geometry, easy recoloring, or future brand edits. A mixed package is valid: for example, SVG shell plus raster glow.
@@ -158,13 +177,15 @@ Use one or two flat colors, no bevel, and no shadows. Ask for vector-friendly ge
 
 ## Iteration
 
-After each generation:
+During the concept phase, after each generation:
 
 1. Inspect at full size.
 2. Downsample mentally or with `scripts/icon_qa.py`.
 3. Identify one failure: silhouette, scale, palette, depth, or originality.
 4. Make one targeted change while repeating invariants.
 5. Keep discarded directions only when the user wants a decision trail.
+6. Preserve the last accepted candidate and create a new version for every revision.
+7. Do not begin layer generation or Composer work until explicit approval is recorded.
 
 Do not solve a weak metaphor with more polish. Return to concept selection.
 

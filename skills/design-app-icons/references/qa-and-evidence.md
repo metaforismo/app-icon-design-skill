@@ -15,13 +15,15 @@
 Use explicit labels:
 
 1. **Concept inspected:** generated or drawn image reviewed at full size.
-2. **Static preflight passed:** dimensions, mode, alpha, and small previews checked.
-3. **Icon Composer previewed:** platforms, appearances, material, and masks observed.
-4. **Xcode build validated:** target setting and successful build observed.
-5. **Simulator validated:** icon observed in system context.
-6. **Device validated:** icon observed on named hardware and OS.
-7. **Store validated:** uploaded/approved product-page asset observed.
-8. **Experiment measured:** Product Page Optimization result observed with uncertainty.
+2. **Design approved:** the user explicitly authorized a named concept for production and the design lock was recorded.
+3. **Production fidelity checked:** recomposed SVG/PNG sources compared with the approved concept at full size and 32 px.
+4. **Static preflight passed:** dimensions, mode, alpha, and small previews checked.
+5. **Icon Composer previewed:** platforms, appearances, material, and masks observed.
+6. **Xcode build validated:** target setting and successful build observed.
+7. **Simulator validated:** icon observed in system context.
+8. **Device validated:** icon observed on named hardware and OS.
+9. **Store validated:** uploaded/approved product-page asset observed.
+10. **Experiment measured:** Product Page Optimization result observed with uncertainty.
 
 Never collapse these levels into “done.”
 
@@ -132,6 +134,9 @@ Do not claim a WCAG contrast pass for an icon unless a specific measurable crite
 ## Artifact
 
 - Source:
+- Approved concept/version:
+- Approved artifact SHA-256:
+- Production-fidelity comparison:
 - Dimensions:
 - Color mode:
 - Alpha:

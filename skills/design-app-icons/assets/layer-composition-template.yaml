@@ -1,5 +1,12 @@
 schema_version: 1
 name: replace-with-direction-name
+approval:
+  state: approved-production-authorized
+  record: design-approval.yaml
+  approved_concept: replace-with-approved-concept-path
+  sha256: replace-with-approved-file-digest
+  locked_invariants:
+    - replace-with-recognition-anchor
 canvas:
   width: 1024
   height: 1024

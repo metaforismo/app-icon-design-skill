@@ -21,6 +21,8 @@ Apple’s 2026 refinement adds sharper material rendering, selectable refraction
 
 ## Prepare source artwork
 
+For a new icon or redesign, require `Approved — production authorized` and a completed `design-approval.yaml` before preparing sources. A Liquid Glass migration of already-approved owned artwork may treat that supplied artwork as the approved concept when the user explicitly requests production.
+
 1. Start from the latest Apple Design Resources app-icon template.
 2. Use 1024 × 1024 for iPhone, iPad, and Mac; use 1088 × 1088 for Apple Watch.
 3. Draw back-to-front layers in a vector editor.
@@ -36,6 +38,8 @@ Do not force a complex illustration into many depth slices. Apple documents a ma
 ## Create and organize the icon
 
 Open the latest Xcode and choose **Xcode > Open Developer Tool > Icon Composer**, or use Apple’s standalone download.
+
+Before opening Composer, recompose the exported SVG/PNG sources and compare the result with the approved concept. If metaphor, silhouette, composition, focal scale, or palette drifted materially, return to concept review and obtain re-approval.
 
 1. Create and save a file with the intended Xcode app-icon name, commonly `AppIcon.icon`.
 2. In the Document inspector, enable only the supported platforms to reduce accidental variations.
@@ -115,4 +119,3 @@ Separate static, Simulator, and device evidence. A static exported PNG cannot pr
 - Forgetting that tvOS and visionOS remain asset-catalog workflows
 - Replacing the existing asset catalog before comparing earlier-release output
 - Calling the result “Liquid Glass validated” without an Icon Composer or runtime preview
-

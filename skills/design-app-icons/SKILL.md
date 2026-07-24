@@ -1,18 +1,18 @@
 ---
 name: design-app-icons
-description: Design, redesign, critique, generate, reconstruct, validate, and deliver distinctive app icons, with deep support for iOS, iPadOS, macOS, watchOS, Apple Icon Composer, Liquid Glass, Xcode asset catalogs, alternate icons, and App Store icon experiments. Use when Codex needs to turn a product brief or visual references into original icon directions; use imagegen for bitmap concept exploration or variants; plan production-ready SVG/PNG layers; audit an existing icon at small sizes and across masks or appearances; prepare an Icon Composer or legacy asset-catalog handoff; or document evidence for App Store delivery.
+description: Design, redesign, critique, generate, reconstruct, validate, and deliver distinctive app icons through an approval-gated workflow, with deep support for iOS, iPadOS, macOS, watchOS, Apple Icon Composer, Liquid Glass, Xcode asset catalogs, alternate icons, and App Store icon experiments. Use when Codex needs to turn a product brief or visual references into original icon directions; iterate quickly on whole-icon Imagegen concepts until the user explicitly approves one; then create production-ready SVG/PNG layers, an Icon Composer handoff, and platform evidence; audit an existing icon at small sizes and across masks or appearances; or document App Store delivery and experimentation.
 ---
 
 # Design App Icons
 
-Create an icon as a product identity system, not a decorated square. Move from a clear product metaphor through original concepts, production layers, platform previews, and an evidence-backed handoff.
+Create an icon as a product identity system, not a decorated square. Separate cheap design exploration from expensive production. Iterate on a flattened concept first; create layers and enter Icon Composer only after the user explicitly approves the design.
 
 ## Start with the correct route
 
 Choose one route before creating files:
 
-1. **New icon:** define the app promise, generate distinct metaphors, select one silhouette, then produce and validate.
-2. **Redesign:** preserve the recognition anchors that still serve the brand; change only the weaknesses the audit proves.
+1. **New icon:** define the app promise, generate distinct metaphors, iterate on one silhouette, obtain explicit approval, then produce and validate.
+2. **Redesign:** preserve the recognition anchors that still serve the brand; iterate on the weaknesses the audit proves, obtain explicit approval, then produce.
 3. **Critique:** inspect the supplied asset and contexts; return prioritized findings and experiments without changing files unless asked.
 4. **Liquid Glass migration:** separate source artwork into layers, remove baked effects, assemble in Icon Composer, and test current appearances.
 5. **Delivery or repair:** inspect the Xcode project, existing `.icon` file or asset catalog, platform targets, and build settings before editing.
@@ -30,6 +30,52 @@ Read the matching reference before acting:
 - Handoff structure: [delivery-and-handoff.md](references/delivery-and-handoff.md)
 - Current sources and claim boundaries: [sources.md](references/sources.md)
 
+## Work in two gated phases
+
+Use this sequence by default for new icons and redesigns, even when the initial request asks for an end-to-end icon. The approval pause prevents spending time decomposing a design the user may reject.
+
+### Phase 1 — Explore and iterate
+
+1. Generate whole-icon concept masters, not production layers.
+2. Present clearly named directions or versions at full size and small-icon scale.
+3. Ask what to keep and what to change. On each revision, edit the selected concept or generate a targeted successor while repeating its locked invariants.
+4. Change one design dimension at a time when practical: metaphor, silhouette, composition, palette, depth, or material.
+5. Keep the phase status `Exploring — not approved`; do not create SVG production geometry, transparent layer sets, `.icon` files, Xcode changes, or Composer evidence yet.
+6. Continue until the user explicitly approves a specific version.
+
+End each concept turn with the version IDs shown, a one-line description of what changed, and a direct choice: request another targeted revision or explicitly approve one named version. Do not make the user restate the whole brief.
+
+Do not infer approval from silence, “better,” “interesting,” or a request for another variation. Accept clear equivalents such as “I approve this,” “this is the one,” “lock this design,” or “proceed to production with version B3.” If the user already supplies an approved design and explicitly requests production, record that as the approval and begin Phase 2.
+
+### Gate 1 — Record the approved design
+
+Before production, copy `assets/design-approval-template.yaml` and record:
+
+- the approved concept path or supplied source and its SHA-256 digest when a local file exists
+- the exact approved version and approval date
+- recognition anchor, silhouette, composition, palette, and protected invariants
+- permitted production translations, such as replacing baked glass with Composer material
+- the proposed back-to-front layer plan and SVG/raster decision for each role
+
+Set `status: approved-production-authorized`, `approval.explicitly_approved: true`, and `production_plan.authorized: true`. When the approved source is not a local file, keep `concept.sha256: null` and describe the supplied source precisely in the evidence note; never invent a digest.
+
+The approval locks the design intent, not generation artifacts. Remove noise, repair geometry, and translate material effects without silently changing the approved identity.
+
+### Phase 2 — Produce after approval
+
+1. Freeze the shared coordinate, lighting, palette, and optical-alignment contract.
+2. Create one production role per source file. Reconstruct exact geometry as SVG; use separate Imagegen calls for raster roles that genuinely need texture, glow, or organic detail.
+3. Verify real alpha, bounds, edge quality, alignment, and lighting for every raster layer.
+4. Composite the sources and compare the proof with the approved concept at full size and 32 px.
+5. If the composite preserves the lock, continue through Icon Composer, Xcode, Simulator, and the requested handoff without asking for approval after every mechanical step.
+6. If production requires a material change to the approved metaphor, silhouette, composition, or palette, stop, return to Phase 1 with a revised concept master, and request a new approval. Do not hide design drift inside reconstruction.
+
+Keep intermediate status explicit:
+
+- `Exploring — not approved`: concept iterations only
+- `Approved — production authorized`: Gate 1 recorded; production may proceed
+- `Production blocked — re-approval required`: faithful reconstruction is not possible without a visible design change
+
 ## Establish the brief
 
 Collect only information that changes the design:
@@ -40,6 +86,7 @@ Collect only information that changes the design:
 - existing brand assets, recognition anchors, and prohibited changes
 - required styles or references and the role of each reference
 - whether the result is exploration, a flattened bitmap, layer sources, an Icon Composer handoff, or an Xcode change
+- whether a specific concept is already explicitly approved for production; assume `no` when unclear
 - legal or policy constraints, including third-party brands, hardware, characters, and licensed art
 
 If the user supplies many references, group them by broad traits instead of imitating individual icons. Label each input as an edit target, identity anchor, style reference, competitive reference, or context screenshot. Never assume a source URL or screenshot grants reuse rights.
@@ -77,6 +124,8 @@ Use the built-in `image_gen` tool by default. Read [imagegen-workflow.md](refere
 
 Treat user-supplied icons as references unless the user explicitly asks to edit one. In the prompt, name the broad qualities to borrow and explicitly prohibit reproducing the reference symbol, composition, palette, or brand identity.
 
+During Phase 1, optimize for decision speed. Generate or edit a single flattened whole-icon candidate per call. Do not spend calls generating separate background, symbol, glow, shadow, or texture layers before approval. Preserve each selected candidate as a versioned concept master so the user can compare and revise it non-destructively.
+
 Generate one asset per call. For each direction:
 
 1. Write a structured prompt with use case, asset type, product promise, metaphor, style, composition, palette, material, constraints, and avoid list.
@@ -84,16 +133,16 @@ Generate one asset per call. For each direction:
 3. Require one bold focal silhouette, generous internal breathing room, no text by default, no watermark, no trademarks, and no device mockup.
 4. Ask for no baked outer rounded-square mask. The platform applies the final mask.
 5. If the concept targets Icon Composer, request geometry that can be reconstructed into at most four depth groups.
-6. Inspect the result at full size and as a small thumbnail. Iterate with one targeted change.
+6. Inspect the result at full size and as a small thumbnail. Iterate with one targeted change while preserving all stated invariants.
 7. Save project-bound outputs inside the project. Record the final prompt, tool mode, date, input roles, and known limitations.
 
 Do not present an image-generated bitmap as editable vector geometry or as a valid `.icon` file. Use it as a concept master, then reconstruct intentional paths and layers in a vector tool when the delivery requires scalable, brand-controlled artwork.
 
-When the user wants one generated element per image, use the layer-first route in [imagegen-workflow.md](references/imagegen-workflow.md) and start from `assets/layer-composition-template.yaml`: freeze a shared coordinate and lighting contract, generate one production role per call, verify the actual alpha channel, normalize each layer, composite a proof, and only then import the reviewed layers into Icon Composer. If Imagegen returns a baked checkerboard or drifts in placement, retry against a flat key color or reconstruct; never call the raw result transparent or aligned without checking it.
+Only after Gate 1, when the approved design needs generated raster elements, use the layer-first route in [imagegen-workflow.md](references/imagegen-workflow.md) and start from `assets/layer-composition-template.yaml`: freeze a shared coordinate and lighting contract, generate one production role per call, verify the actual alpha channel, normalize each layer, composite a proof, and only then import the reviewed layers into Icon Composer. If Imagegen returns a baked checkerboard or drifts in placement, retry against a flat key color or reconstruct; never call the raw result transparent or aligned without checking it.
 
 ## Reconstruct production artwork
 
-Use the selected concept as guidance, not as an object to auto-trace blindly.
+Begin only after Gate 1. Use the approved concept and approval record as the visual contract, not as an object to auto-trace blindly.
 
 1. Redraw the defining silhouette with deliberate curves, optical centering, and stable negative space.
 2. Remove generation artifacts, accidental asymmetry, noisy texture, fake microcopy, and unrepeatable reflections.
@@ -102,6 +151,7 @@ Use the selected concept as guidance, not as an object to auto-trace blindly.
 5. Export unmasked full-canvas SVG layers when supported; use PNG only for artwork that relies on unsupported SVG features.
 6. Name source layers back-to-front with numeric prefixes.
 7. Keep a flattened concept preview separate from production layer sources.
+8. Recompose the sources after every material layer change and compare them against the approved concept before continuing.
 
 For current iOS, iPadOS, macOS, and watchOS Liquid Glass work, continue with [liquid-glass-icon-composer.md](references/liquid-glass-icon-composer.md). For tvOS, visionOS, or deliberate legacy delivery, use [platform-specifications.md](references/platform-specifications.md) and [delivery-and-handoff.md](references/delivery-and-handoff.md).
 
@@ -137,7 +187,7 @@ If a context was not tested, say `not tested`; do not convert a design assumptio
 
 ## Handle platform files safely
 
-Before modifying an app:
+Do not begin Icon Composer or Xcode integration for an unapproved concept. After Gate 1, inspect the target before modifying an app:
 
 1. Inspect the project, targets, current `AppIcon` asset catalog, `.icon` files, build settings, alternate icon configuration, and minimum deployments.
 2. Preserve existing sources until the new path builds and displays correctly.
@@ -163,6 +213,7 @@ Keep the product promise and visual quality comparable. Ensure alternate icons a
 Use the templates in `assets/` and include:
 
 - approved brief and assumptions
+- approval record, approved concept digest, and locked invariants
 - concept directions and selection rationale
 - final prompt history and image-generation provenance
 - concept master and separated production sources

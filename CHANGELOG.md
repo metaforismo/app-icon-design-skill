@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0 — 2026-07-24
+
+- Added an explicit two-phase workflow: inexpensive whole-icon iteration first, production only after user approval.
+- Added stable concept versioning, edit invariants, approval language, and a rule against inferring approval from vague positive feedback.
+- Added a machine-readable design-approval template with artifact digest, design lock, permitted translations, layer decisions, and re-approval triggers.
+- Required approved-concept comparison before Icon Composer and a return to concept approval whenever reconstruction materially changes the identity.
+- Added regression tests and repository validation for the approval gate.
+
 ## 1.0.0 — 2026-07-24
 
 - Added the production-oriented `$design-app-icons` Codex skill.
