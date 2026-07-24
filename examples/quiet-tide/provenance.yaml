@@ -1,0 +1,9 @@
+name: "Quiet Tide"
+generated_at: "2026-07-23"
+tool_mode: "built-in image_gen"
+prompt_file: "prompt.md"
+input_roles:
+  - "Three user-supplied third-party icons used only as broad style references"
+rights_note: "Original output; reference images are not redistributed"
+status: "Concept master; not an Icon Composer file; not Xcode, Simulator, device, store, or conversion validated"
+

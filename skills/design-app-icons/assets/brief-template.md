@@ -1,0 +1,60 @@
+# App icon brief
+
+## Product
+
+- App name:
+- Core promise in one phrase:
+- Category:
+- Audience:
+- Emotional signal:
+
+## Scope
+
+- Platforms:
+- Minimum releases:
+- Deliverable: concept / bitmap / layers / Icon Composer / Xcode integration
+- Existing icon:
+- Recognition anchors to preserve:
+- Prohibited changes:
+
+## References
+
+| Input | Role | Broad qualities to use | Elements not to copy |
+| --- | --- | --- | --- |
+
+## Concept directions
+
+### Direction A
+
+- Idea in seven words:
+- Recognition anchor:
+- Product fit:
+- Collision risk:
+- Small-size plan:
+- Layer plan:
+
+### Direction B
+
+- Idea in seven words:
+- Recognition anchor:
+- Product fit:
+- Collision risk:
+- Small-size plan:
+- Layer plan:
+
+### Direction C
+
+- Idea in seven words:
+- Recognition anchor:
+- Product fit:
+- Collision risk:
+- Small-size plan:
+- Layer plan:
+
+## Decision
+
+- Selected direction:
+- Rationale:
+- Rejected risks:
+- Assumptions:
+

@@ -1,0 +1,4 @@
+interface:
+  display_name: "App Icon Studio"
+  short_description: "Design and validate distinctive Apple app icons"
+  default_prompt: "Use $design-app-icons to create an original iOS app icon concept and a production-ready validation plan."
