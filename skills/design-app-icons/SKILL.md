@@ -17,6 +17,7 @@ Choose one route before creating files:
 4. **Liquid Glass migration:** separate source artwork into layers, remove baked effects, assemble in Icon Composer, and test current appearances.
 5. **Delivery or repair:** inspect the Xcode project, existing `.icon` file or asset catalog, platform targets, and build settings before editing.
 6. **Experiment design:** create meaningfully different hypotheses and prepare alternate icons for Product Page Optimization without promising lift.
+7. **Plan only:** specify directions, prompts, gates, file structure, and evidence boundaries without invoking Imagegen or claiming files exist.
 
 Read the matching reference before acting:
 
@@ -44,6 +45,8 @@ Collect only information that changes the design:
 If the user supplies many references, group them by broad traits instead of imitating individual icons. Label each input as an edit target, identity anchor, style reference, competitive reference, or context screenshot. Never assume a source URL or screenshot grants reuse rights.
 
 When the brief is incomplete but safe to infer, state the assumptions and continue. Ask only when a missing choice would materially change brand identity, platform delivery, or external publication.
+
+For plan-only requests, do not generate or write assets. Use `Prepared (specification only)` for a reproducible plan and state plainly that no files exist.
 
 ## Define the concept before styling it
 
@@ -86,6 +89,8 @@ Generate one asset per call. For each direction:
 
 Do not present an image-generated bitmap as editable vector geometry or as a valid `.icon` file. Use it as a concept master, then reconstruct intentional paths and layers in a vector tool when the delivery requires scalable, brand-controlled artwork.
 
+When the user wants one generated element per image, use the layer-first route in [imagegen-workflow.md](references/imagegen-workflow.md) and start from `assets/layer-composition-template.yaml`: freeze a shared coordinate and lighting contract, generate one production role per call, verify the actual alpha channel, normalize each layer, composite a proof, and only then import the reviewed layers into Icon Composer. If Imagegen returns a baked checkerboard or drifts in placement, retry against a flat key color or reconstruct; never call the raw result transparent or aligned without checking it.
+
 ## Reconstruct production artwork
 
 Use the selected concept as guidance, not as an object to auto-trace blindly.
@@ -105,7 +110,7 @@ For current iOS, iPadOS, macOS, and watchOS Liquid Glass work, continue with [li
 Run deterministic inspection when Pillow is available:
 
 ```bash
-python scripts/icon_qa.py path/to/icon.png \
+python3 scripts/icon_qa.py path/to/icon.png \
   --platform ios \
   --role flattened \
   --preview-dir work/icon-previews \
@@ -113,6 +118,8 @@ python scripts/icon_qa.py path/to/icon.png \
 ```
 
 Use `--role layer` for transparent source layers. Treat the script as a preflight aid, not a replacement for Icon Composer, Xcode, Simulator, a real device, or visual judgment.
+
+The preview sheet preserves tvOS aspect ratio, applies an approximate platform mask, and includes light, dark, mono, and tinted stress-test columns. Never label those simulations as Apple-rendered appearances.
 
 Perform all applicable checks:
 
@@ -166,9 +173,8 @@ Use the templates in `assets/` and include:
 - known limitations and untested states
 - source links with access date
 
-End with a concise status split:
+End with a concise status split. `Prepared` may describe either existing artifacts or a reproducible specification; qualify the latter as `Prepared (specification only)` so the user never infers files exist:
 
 - **Validated:** directly observed or tool-verified
 - **Prepared:** files exist but need platform import or build
 - **Not tested:** external, device, App Store, or conversion claims not verified
-

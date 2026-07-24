@@ -76,9 +76,12 @@ def validate_skill(result: Result) -> None:
     for relative in sorted(actual - linked):
         result.error(f"Reference is not directly linked from SKILL.md: {relative}")
 
-    script = SKILL / "scripts" / "icon_qa.py"
-    if not script.is_file():
-        result.error("Missing icon_qa.py")
+    for script_name in ("icon_qa.py", "prepare_raster_layer.py", "compose_raster_layers.py"):
+        script = SKILL / "scripts" / script_name
+        if not script.is_file():
+            result.error(f"Missing {script_name}")
+    if not (SKILL / "assets" / "layer-composition-template.yaml").is_file():
+        result.error("Missing layer-composition-template.yaml")
 
 
 def validate_agent_metadata(result: Result) -> None:
@@ -141,6 +144,72 @@ def validate_examples(result: Result) -> None:
             if "not an Icon Composer file" not in status:
                 result.error(f"{name} must retain the concept-only evidence boundary")
 
+    quiet_tide = examples / "quiet-tide"
+    production_files = (
+        quiet_tide / "layers" / "01-backdrop.svg",
+        quiet_tide / "layers" / "02-sun.svg",
+        quiet_tide / "layers" / "03-wave.svg",
+        quiet_tide / "production" / "QuietTide.icon" / "icon.json",
+        quiet_tide / "production" / "README.md",
+        quiet_tide / "production" / "evidence.md",
+        quiet_tide / "production" / "fixture" / "project.yml",
+        quiet_tide / "production" / "fixture" / "Sources" / "QuietTideFixtureApp.swift",
+        quiet_tide / "production" / "evidence" / "composer-default.png",
+        quiet_tide / "production" / "evidence" / "composer-dark.png",
+        quiet_tide / "production" / "evidence" / "composer-mono.png",
+        quiet_tide / "production" / "evidence" / "composer-watchos-default.png",
+        quiet_tide / "production" / "evidence" / "export-default.png",
+        quiet_tide / "production" / "evidence" / "simulator-home.png",
+    )
+    for path in production_files:
+        if not path.is_file():
+            result.error(f"Quiet Tide production evidence is missing {path.relative_to(quiet_tide)}")
+
+    icon_json = quiet_tide / "production" / "QuietTide.icon" / "icon.json"
+    if icon_json.is_file():
+        data = yaml.safe_load(icon_json.read_text(encoding="utf-8"))
+        groups = data.get("groups", []) if isinstance(data, dict) else []
+        layer_names = {
+            layer.get("image-name")
+            for group in groups
+            for layer in group.get("layers", [])
+            if isinstance(layer, dict)
+        }
+        if layer_names != {"01-backdrop.svg", "02-sun.svg", "03-wave.svg"}:
+            result.error("QuietTide.icon must contain the three expected SVG layers")
+
+    mood_layers = examples / "mood-lantern" / "layer-first"
+    for relative in (
+        "README.md",
+        "prompts.md",
+        "raw/01-backdrop.png",
+        "raw/02-lantern-shell.png",
+        "raw/03-amber-glow.png",
+        "raw/02-lantern-shell-key.png",
+        "raw/03-amber-glow-key.png",
+        "candidate/01-backdrop.png",
+        "candidate/02-amber-glow.png",
+        "candidate/03-lantern-shell.png",
+        "assembled-proof.png",
+        "qa/glow-cleanup.json",
+        "qa/shell-cleanup.json",
+        "qa/glow-audit.json",
+        "qa/shell-audit.json",
+        "qa/static-audit.json",
+        "qa/previews/assembled-proof-ios-appearance-sheet.png",
+    ):
+        if not (mood_layers / relative).is_file():
+            result.error(f"Mood Lantern layer-first evidence is missing {relative}")
+
+    for relative in ("candidate/02-amber-glow.png", "candidate/03-lantern-shell.png"):
+        with Image.open(mood_layers / relative) as image:
+            if image.size != (1024, 1024) or image.mode != "RGBA":
+                result.error(f"Mood Lantern {relative} must be a 1024x1024 RGBA layer")
+
+    with Image.open(mood_layers / "assembled-proof.png") as image:
+        if image.size != (1024, 1024) or image.mode != "RGB":
+            result.error("Mood Lantern assembled proof must be an opaque 1024x1024 RGB PNG")
+
 
 def validate_repo_hygiene(result: Result) -> None:
     required = [
@@ -148,7 +217,18 @@ def validate_repo_hygiene(result: Result) -> None:
         ROOT / "LICENSE",
         ROOT / "NOTICE.md",
         ROOT / "CONTRIBUTING.md",
+        ROOT / "CHANGELOG.md",
+        ROOT / "VERSION",
         ROOT / ".github" / "workflows" / "validate.yml",
+        ROOT / ".github" / "workflows" / "source-freshness.yml",
+        ROOT / "docs" / "source-manifest.yaml",
+        ROOT / "scripts" / "check_sources.py",
+        ROOT / "scripts" / "install.sh",
+        ROOT / "scripts" / "package_skill.py",
+        ROOT / "assets" / "social-preview.png",
+        ROOT / "assets" / "social-preview-prompt.md",
+        ROOT / "experiments" / "quiet-tide-ppo" / "experiment.yaml",
+        ROOT / "experiments" / "quiet-tide-ppo" / "result-template.md",
     ]
     for path in required:
         if not path.is_file():
@@ -162,7 +242,7 @@ def validate_repo_hygiene(result: Result) -> None:
         ".codex/" + "attachments/",
     )
     unresolved_template_marker = "[" + "TODO"
-    text_extensions = {".md", ".yaml", ".yml", ".py", ".txt", ".json"}
+    text_extensions = {".md", ".yaml", ".yml", ".py", ".txt", ".json", ".swift", ".svg"}
     for path in ROOT.rglob("*"):
         if not path.is_file() or path.suffix.lower() not in text_extensions:
             continue

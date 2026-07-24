@@ -46,7 +46,21 @@ For a layer source:
 - no baked blur, shadow, specular, or refraction intended for Icon Composer
 - meaningful filename and z-order
 
-Use `scripts/icon_qa.py` for repeatable dimension/alpha checks and previews.
+For a foreground raster layer, `--role layer` is strict: the PNG must contain a real alpha channel, at least one fully transparent pixel, and four fully transparent corners. Add `--expected-content-box left,top,right,bottom` when the layer-first composition contract declares bounds. Audit an intentionally opaque full-canvas backdrop as `--role flattened`, then interpret it as a source layer in the handoff.
+
+Example:
+
+```bash
+python3 scripts/icon_qa.py 02-primary.png \
+  --platform ios \
+  --role layer \
+  --expected-content-box 192,192,832,832 \
+  --report qa/02-primary.json
+```
+
+Alpha validity is necessary but not sufficient. Inspect antialiased boundaries at 100–400% over black, white, neutral gray, and a saturated color. Reject key-color spill, magenta/green fringe, single-pixel halos, and geometry that only appears aligned because another layer hides the seam.
+
+Use `scripts/icon_qa.py` for repeatable dimension, format, embedded-profile, alpha, and preview checks. Its rounded-rectangle and circular masks are deliberately approximate context masks, not Apple production geometry.
 
 ## Small-size review
 
@@ -65,6 +79,8 @@ Ask:
 - Does the icon still differ from category neighbors?
 
 Do not judge only on a zoomed 1024-pixel canvas.
+
+For tvOS, preserve the 5:3 artwork aspect ratio. Treat `--sizes` as preview widths; do not force the 800 × 480 source into a square thumbnail. The QA script also renders a light/dark/mono/tinted comparison sheet. Those appearance transformations are static stress tests, not Icon Composer output.
 
 ## Mask and appearance review
 
@@ -144,4 +160,3 @@ Do not claim a WCAG contrast pass for an icon unless a specific measurable crite
 - screenshot:
 - version:
 ```
-

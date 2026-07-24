@@ -1,6 +1,6 @@
 # Sources and claim boundaries
 
-Last checked: 2026-07-23.
+Last checked: 2026-07-24. The repository release ledger is maintained at `docs/source-manifest.yaml`; the installed skill retains the primary URLs below. The scheduled workflow checks availability but cannot prove that page content or platform behavior is unchanged.
 
 ## Primary Apple sources
 
@@ -35,4 +35,3 @@ The secondary article and supplied text contained claims that must not be repeat
 - Apple does not guarantee App Review approval for following a checklist.
 - Apple does not prescribe a universal 14-day Product Page Optimization test.
 - A style refresh does not prove higher ranking, tap-through, or conversion.
-

@@ -1,0 +1,11 @@
+# Changelog
+
+## 1.0.0 — 2026-07-24
+
+- Added the production-oriented `$design-app-icons` Codex skill.
+- Added current Apple-platform, Icon Composer, Liquid Glass, delivery, QA, originality, and Product Page Optimization references.
+- Added four original Imagegen case studies and a documented rejected direction.
+- Added a real Quiet Tide Icon Composer document, SVG sources, XcodeGen fixture, build evidence, Simulator evidence, and clean Composer export.
+- Added the Mood Lantern layer-first Imagegen workflow with honest alpha-failure evidence, chroma cleanup, and compositing tools.
+- Added static icon QA, appearance/mask previews, repository validation, tests, CI, and scheduled official-source checks.
+- Added deterministic release packaging and an original repository social preview.

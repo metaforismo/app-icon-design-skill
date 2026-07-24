@@ -83,7 +83,7 @@ This is a valid handoff when the user requested ideation rather than platform in
 - Use numeric prefixes for layer z-order.
 - Use stable direction names instead of `final-final-2`.
 - Keep platform/appearance in variant filenames, for example `app-icon-ios-dark.png`.
-- Keep generated raw output separate from cleaned production art.
+- Keep generated raw output separate from alpha-normalized candidates and approved production art.
 
 ## Handoff checklist
 
@@ -101,4 +101,3 @@ This is a valid handoff when the user requested ideation rather than platform in
 - [ ] Simulator/device status explicit
 - [ ] Store status explicit
 - [ ] Unverified claims labeled
-

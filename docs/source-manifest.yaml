@@ -1,0 +1,58 @@
+schema_version: 1
+verified_on: "2026-07-24"
+sources:
+  - id: apple-hig-app-icons
+    title: Human Interface Guidelines - App icons
+    authority: Apple
+    area: design
+    url: https://developer.apple.com/design/human-interface-guidelines/app-icons/
+  - id: apple-icon-composer
+    title: Icon Composer
+    authority: Apple
+    area: authoring
+    url: https://developer.apple.com/icon-composer/
+  - id: apple-design-resources
+    title: Apple Design Resources
+    authority: Apple
+    area: templates
+    url: https://developer.apple.com/design/resources/
+  - id: apple-xcode-icon-composer
+    title: Creating your app icon using Icon Composer
+    authority: Apple
+    area: delivery
+    url: https://developer.apple.com/documentation/xcode/creating-your-app-icon-using-icon-composer
+  - id: apple-asset-catalog-icons
+    title: Configuring your app icon using an asset catalog
+    authority: Apple
+    area: delivery
+    url: https://developer.apple.com/documentation/xcode/configuring-your-app-icon/
+  - id: apple-alternate-icons
+    title: Configuring your app to use alternate app icons
+    authority: Apple
+    area: delivery
+    url: https://developer.apple.com/documentation/xcode/configuring-your-app-to-use-alternate-app-icons
+  - id: wwdc25-icon-guidance
+    title: Say hello to the new look of app icons
+    authority: Apple
+    area: design
+    url: https://developer.apple.com/videos/play/wwdc2025/220/
+  - id: wwdc25-icon-composer
+    title: Create icons with Icon Composer
+    authority: Apple
+    area: authoring
+    url: https://developer.apple.com/videos/play/wwdc2025/361/
+  - id: app-store-ppo-overview
+    title: Product Page Optimization overview
+    authority: Apple
+    area: experimentation
+    url: https://developer.apple.com/help/app-store-connect/create-product-page-optimization-tests/overview-of-product-page-optimization/
+  - id: app-store-ppo-treatments
+    title: Configure test treatments
+    authority: Apple
+    area: experimentation
+    url: https://developer.apple.com/help/app-store-connect/create-product-page-optimization-tests/configure-test-treatments/
+  - id: app-review-guidelines
+    title: App Review Guidelines
+    authority: Apple
+    area: policy
+    url: https://developer.apple.com/app-store/review/guidelines/

@@ -2,6 +2,8 @@
 
 ![Mood Lantern concept](concept-master.png)
 
+The [layer-first experiment](layer-first/README.md) also demonstrates one-element-per-generation assembly and records the baked-checkerboard transparency failure honestly.
+
 ## Brief
 
 - Fictional product: emotion journal
@@ -33,7 +35,6 @@ Remove one ring, reduce eye highlights, flatten the face, and keep the core smal
 
 ## Status
 
-- Prepared: generated 1024 × 1024 concept and full prompt
-- Validated: static dimensions and alpha are covered by repository validation
-- Not tested: vector reconstruction, Icon Composer, Xcode, Simulator, device, App Store, or conversion
-
+- **Validated:** original concept dimensions; actual alpha inspection of separated outputs; reproducible chroma cleanup and composite; static iOS audit of the assembled proof.
+- **Prepared:** generated concept, prompts, alpha-normalized raster candidates, and assembled proof; current candidates are not approved for import.
+- **Not tested:** Icon Composer import, Xcode, Simulator, device, App Store, or conversion.

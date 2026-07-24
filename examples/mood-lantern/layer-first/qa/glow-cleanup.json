@@ -1,0 +1,37 @@
+{
+  "input": "examples/mood-lantern/layer-first/raw/03-amber-glow-key.png",
+  "output": "examples/mood-lantern/layer-first/candidate/02-amber-glow.png",
+  "key_color": [
+    0,
+    255,
+    0
+  ],
+  "threshold": 170.0,
+  "feather": 55.0,
+  "original_alpha_box": [
+    331,
+    353,
+    928,
+    879
+  ],
+  "target_box": [
+    342,
+    573,
+    681,
+    842
+  ],
+  "scale_factor": 0.5114068441064639,
+  "final_alpha_box": [
+    359,
+    573,
+    664,
+    842
+  ],
+  "semi_transparent_pixels": 3018,
+  "green_spill_candidate_pixels": 72,
+  "limitations": [
+    "Spill detection is a simple green-dominance heuristic, not perceptual matting proof.",
+    "Fit-box positioning does not prove internal geometry alignment.",
+    "Inspect edges over black, white, gray, and saturated backgrounds before import."
+  ]
+}

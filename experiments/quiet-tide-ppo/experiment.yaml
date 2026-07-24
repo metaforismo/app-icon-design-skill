@@ -1,0 +1,31 @@
+name: quiet-tide-icon-ppo
+status: prepared_not_run
+product_promise: calm focus
+primary_metric: app_store_conversion_rate
+hypothesis: a simpler wave-and-sun treatment communicates the product faster than richer glass depth
+variants:
+  - id: A
+    label: reconstructed_identity
+    change: baseline Icon Composer reconstruction
+  - id: B
+    label: flat_high_contrast
+    change: material depth removed; silhouette preserved
+  - id: C
+    label: warm_palette
+    change: palette warmth only; silhouette and depth preserved
+controls:
+  metadata_locked: true
+  pricing_locked: true
+  equivalent_asset_quality_required: true
+  submitted_binary_inclusion_required: true
+evidence:
+  test_id: null
+  start_at: null
+  end_at: null
+  impressions: null
+  conversion_rate_by_variant: null
+  uncertainty_or_confidence: null
+decision: null
+limitations:
+  - No live App Store test has been run.
+  - No conversion or ranking claim is implied.

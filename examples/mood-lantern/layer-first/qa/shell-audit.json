@@ -1,0 +1,39 @@
+{
+  "source": "examples/mood-lantern/layer-first/candidate/03-lantern-shell.png",
+  "platform": "ios",
+  "role": "layer",
+  "width": 1024,
+  "height": 1024,
+  "mode": "RGBA",
+  "format": "PNG",
+  "icc_profile_present": true,
+  "alpha_present": true,
+  "alpha_min": 0,
+  "alpha_max": 255,
+  "nonopaque_pixels": 780482,
+  "alpha_content_box": [
+    244,
+    64,
+    780,
+    946
+  ],
+  "corner_alpha_max": 0,
+  "corner_luma_range": 0.0,
+  "edge_luma_range": 0.0,
+  "preview_mask": "rounded-rectangle",
+  "findings": [
+    {
+      "severity": "info",
+      "code": "static-preflight",
+      "message": "Dimensions, format, profile, and alpha checks passed. Continue with visual, official-mask, Icon Composer, Xcode, Simulator, and device validation."
+    }
+  ],
+  "preview_files": [],
+  "passed": true,
+  "limitations": [
+    "Static bitmap checks and approximate context previews only.",
+    "Preview masks are heuristics, not Apple's official mask geometry.",
+    "Mono and tinted previews are simulations, not Icon Composer renders.",
+    "Does not validate .icon structure, Xcode settings/builds, Simulator, device, App Store, or conversion."
+  ]
+}

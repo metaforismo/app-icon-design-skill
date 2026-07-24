@@ -1,0 +1,31 @@
+name: Source freshness
+
+on:
+  schedule:
+    - cron: "17 8 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-official-sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: requirements-dev.txt
+      - name: Install manifest dependency
+        run: python -m pip install -r requirements-dev.txt
+      - name: Check official Apple sources
+        run: python scripts/check_sources.py --report source-freshness.json
+      - name: Upload source report
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: source-freshness
+          path: source-freshness.json

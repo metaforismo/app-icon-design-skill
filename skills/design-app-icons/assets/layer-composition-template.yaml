@@ -1,0 +1,54 @@
+schema_version: 1
+name: replace-with-direction-name
+canvas:
+  width: 1024
+  height: 1024
+  color_space: sRGB
+camera: front-facing orthographic-like
+light:
+  direction: upper-left
+  notes: replace with a repeatable description
+palette:
+  - name: backdrop
+    value: "#000000"
+optical_center: [512, 512]
+platforms:
+  ios:
+    canvas: [1024, 1024]
+    mask: system rounded rectangle
+  watchos:
+    canvas: [1088, 1088]
+    mask: system circle
+layers:
+  - order: 1
+    id: 01-backdrop
+    role: opaque full-canvas backdrop
+    target_box: [0, 0, 1024, 1024]
+    alpha: opaque
+    source_decision: raster-or-svg
+  - order: 2
+    id: 02-primary
+    role: replace with one visual element
+    target_box: [192, 192, 832, 832]
+    alpha: transparent outside element
+    source_decision: raster-or-svg
+    platform_layouts:
+      ios:
+        target_box: [192, 192, 832, 832]
+        optical_center: [512, 512]
+      watchos:
+        target_box: [204, 204, 884, 884]
+        optical_center: [544, 544]
+acceptance:
+  inspect_sizes: [16, 20, 29, 32, 40, 60, 76, 83, 128, 256]
+  edge_backgrounds: [black, white, neutral-gray, saturated-color]
+  reject:
+    - baked checkerboard
+    - colored fringe
+    - single-pixel halo
+    - geometry outside target box
+    - mismatched lighting or occlusion
+status:
+  validated: []
+  prepared: []
+  not_tested: []

@@ -32,7 +32,8 @@ Redraw the wave with fewer control points, reduce the lower bowl, keep the sun f
 
 ## Status
 
-- Prepared: generated 1024 × 1024 concept and full prompt
-- Validated: static dimensions and alpha are covered by repository validation
-- Not tested: vector reconstruction, Icon Composer, Xcode, Simulator, device, App Store, or conversion
+- Validated: static concept audit; intentional SVG reconstruction; Icon Composer import and appearance previews; Xcode simulator build; iOS 26.5 Simulator install, launch, and Home Screen icon
+- Prepared: generated concept, full prompt, editable SVGs, real `QuietTide.icon`, reproducible XcodeGen fixture, and evidence ledger
+- Not tested: physical device, signed archive, App Store upload/review, Product Page Optimization, ranking, or conversion
 
+See the [production reconstruction](production/README.md) and [evidence ledger](production/evidence.md).

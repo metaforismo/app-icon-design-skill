@@ -1,0 +1,29 @@
+name: QuietTideFixture
+options:
+  bundleIdPrefix: design.appiconskill
+  deploymentTarget:
+    iOS: "18.0"
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+targets:
+  QuietTideFixture:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources
+      - path: ../QuietTide.icon
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: design.appiconskill.quiettidefixture
+        PRODUCT_NAME: Quiet Tide
+        ASSETCATALOG_COMPILER_APPICON_NAME: QuietTide
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Quiet Tide
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        CURRENT_PROJECT_VERSION: 1
+        MARKETING_VERSION: 1.0
+        CODE_SIGNING_ALLOWED: NO
+    scheme:
+      testTargets: []
