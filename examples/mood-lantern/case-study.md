@@ -2,7 +2,7 @@
 
 ![Mood Lantern concept](concept-master.png)
 
-The [layer-first experiment](layer-first/README.md) also demonstrates one-element-per-generation assembly and records the baked-checkerboard transparency failure honestly.
+The [layer-first experiment](layer-first/README.md) is intentionally retained as a negative fidelity test. It demonstrates one-element-per-generation assembly and the baked-checkerboard transparency failure, but it also proves that successful alpha cleanup does not make a visually faithful reconstruction.
 
 ## Brief
 
@@ -22,19 +22,23 @@ The silhouette communicates “lantern” without a second prop. Large eyes and 
 - The warm light occupies a large area and can erase the body in clear or tinted appearances.
 - The body’s shading is too continuous to import as editable vector layers.
 
-## Production reconstruction
+## Recommended delivery
 
-Use four groups:
+Keep the approved whole image as the authoritative final artwork. Its warm core, shell, face, and reflected light form one integrated rendering, so the default delivery is a flattened 1024 × 1024 image plus static QA.
+
+If the user later needs a durable editable brand system, redesign a simpler vector-native version as a new approved concept. Do not claim that the separated proof preserves this image.
+
+An optional future Icon Composer reinterpretation could use four groups only after re-approval:
 
 1. background fill in Icon Composer
 2. unified lantern silhouette including handle and base
 3. face as a single opaque group
 4. core window as a restrained translucent group
 
-Remove one ring, reduce eye highlights, flatten the face, and keep the core smaller. Test whether the silhouette remains recognizable without the face.
+Removing a ring, reducing eye highlights, flattening the face, or shrinking the core changes the design. Treat that work as a new concept, not a mechanical reconstruction.
 
 ## Status
 
 - **Validated:** original concept dimensions; actual alpha inspection of separated outputs; reproducible chroma cleanup and composite; static iOS audit of the assembled proof.
-- **Prepared:** generated concept, prompts, alpha-normalized raster candidates, and assembled proof; current candidates are not approved for import.
+- **Prepared:** approved-style whole-image concept, prompts, alpha-normalized raster candidates, and a rejected assembled proof; current candidates are not approved for import.
 - **Not tested:** Icon Composer import, Xcode, Simulator, device, App Store, or conversion.

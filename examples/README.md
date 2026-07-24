@@ -23,4 +23,4 @@ Workflow used:
 8. Record explicit design approval before production reconstruction or Icon Composer.
 9. Record the prompt, role, rationale, production reconstruction plan, and evidence boundary.
 
-Quiet Tide demonstrates deliberate SVG reconstruction and a real Icon Composer/Xcode/Simulator path. Mood Lantern demonstrates the raster layer-first alternative. The other concept masters remain flat PNGs and do not claim production validation.
+Quiet Tide demonstrates deliberate SVG reconstruction and a real Icon Composer/Xcode/Simulator path for geometry that survives separation. Mood Lantern demonstrates a rejected raster layer-first route and why the approved flattened image can be the better final. The other concept masters remain flat PNGs and do not claim production validation.

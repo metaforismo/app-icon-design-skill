@@ -7,6 +7,7 @@ Use the built-in `image_gen` tool by default. Use image generation for new raste
 - [Input roles](#input-roles)
 - [Concept prompt structure](#concept-prompt-structure)
 - [Approval-gated concept loop](#approval-gated-concept-loop)
+- [Choose the shortest delivery](#choose-the-shortest-delivery)
 - [Layer-first generation](#layer-first-generation)
 - [Base prompt](#base-prompt)
 - [Style recipes](#style-recipes)
@@ -59,9 +60,24 @@ Keep exploration cheap and reversible:
 5. If an edit drifts, return to the last accepted candidate rather than stacking corrections onto the drifted output.
 6. Mark every candidate `Exploring — not approved` until the user explicitly names the approved version.
 
-Do not interpret “better,” “almost,” or a lack of criticism as approval. Once the user says a clear equivalent of “approve,” “lock,” “this is the one,” or “proceed with this version,” record the approval in `assets/design-approval-template.yaml`; set the approval and production authorization fields to true. Only then plan or generate individual production layers.
+Do not interpret “better,” “almost,” or a lack of criticism as approval. Once the user says a clear equivalent of “approve,” “lock,” “this is the one,” or “proceed with this version,” preserve that version and continue with the shortest requested delivery. For an image-only result, the explicit approval in conversation is enough. Create `assets/design-approval-template.yaml` only for a project-bound editable, Icon Composer, or Xcode handoff.
 
-If the user asks for the entire workflow upfront, complete the concept comparison and pause at the approval gate. After approval, continue autonomously through faithful layer creation, recomposition, Composer, and requested platform checks. Ask again only when production would visibly change a locked invariant or an external action requires separate authorization.
+If the user asks for the entire workflow upfront, complete the concept comparison and pause at the approval gate. After approval, finalize the whole image first. Continue into layers, Composer, or Xcode only when the original request explicitly included that delivery. Ask again when production would visibly change a locked invariant or an external action requires separate authorization.
+
+## Choose the shortest delivery
+
+Use this order after approval:
+
+1. **Finished image — default:** retain the integrated rendering, make only approved cleanup edits, export an opaque 1024 × 1024 PNG, run static QA, and stop.
+2. **Flattened platform asset:** preserve the whole image when Xcode integration is requested and exact appearance matters.
+3. **Minimal SVG reconstruction:** use for simple geometry, repeatable brand curves, or editable color systems.
+4. **Minimal Icon Composer sources:** use only when explicitly requested and the design benefits from independent platform material or depth.
+
+Do not decompose a successful image merely because separate layers sound more professional. A flattened image is often the most faithful production source for integrated 3D lighting, soft bloom, translucent shells, painterly material, fur, glass, or shared reflections.
+
+Before choosing layers, ask one question: `Can these roles be separated and recomposed without changing the approved visual?` If the answer is uncertain, use the finished image. If a proof changes the silhouette, proportions, focal scale, lighting continuity, seam softness, face placement, or palette, reject the decomposition and return to the approved image.
+
+Mood Lantern is the reference failure. Its whole-image concept is coherent because the warm core illuminates the same body that contains it. The separated proof turned the glow into a disk, hardened the aperture and trim, altered proportions, and broke the shared lighting. The correct outcome is not “more layer repair”; it is an image-only final or flattened platform asset.
 
 ## Base prompt
 
@@ -79,7 +95,7 @@ Avoid: micro-details, thin lines, generic stock mark, excessive bloom, copied co
 
 ## Layer-first generation
 
-Use this route only after a design is explicitly approved and when the chosen icon needs painterly, tactile, or luminous raster elements that would lose their character if redrawn as simple vectors. It is not automatically better than reconstruction.
+Use this rare route only after explicit approval, only when the user requested independent raster roles, and only when the chosen roles can be separated without losing shared light or material continuity. It is not automatically better than a finished image or vector reconstruction.
 
 ### 1. Freeze a composition contract
 
@@ -95,7 +111,7 @@ Every generated layer must use that same contract. “Centered” is not precise
 
 ### 2. Generate one role per image
 
-Use separate calls for a backdrop, main object, glow or inset, foreground accent, or shadow only when the element needs independent material, appearance, or depth control. Do not split every highlight into a layer.
+Use separate calls for a backdrop, main object, glow or inset, foreground accent, or shadow only when the element needs independent material, appearance, or depth control and the seam is visually independent in the approved image. Do not split every highlight into a layer. Do not isolate a glow that visibly illuminates or passes through another generated material unless a recomposed test already proves that continuity can be retained.
 
 For a foreground element, ask for:
 
@@ -135,7 +151,7 @@ Treat its output as an **alpha-normalized candidate**, not a clean or approved p
 
 Composite the alpha-normalized candidates in the intended order before importing them. Compare the result to the approved concept at full size and 32 px. Check silhouettes, seams, occlusion, edge contamination, and whether independent lighting still feels coherent.
 
-Treat small reconstruction corrections as production work, but treat a changed metaphor, silhouette, object relationship, focal scale, or palette as a new design. Return the changed composite to the concept loop and request re-approval before opening Icon Composer.
+Treat small reconstruction corrections as production work, but treat a changed metaphor, silhouette, object relationship, focal scale, palette, or lighting continuity as a new design. Reject the layer route rather than normalizing drift. Return to the approved whole image, or return a deliberately changed concept to the concept loop for re-approval before opening Icon Composer.
 
 Use `scripts/compose_raster_layers.py` for deterministic normal-alpha composition on a shared canvas. It embeds sRGB in the flattened proof. Record each candidate’s original alpha bounds, scale factor, final alpha bounds, center offset, and spill heuristic from `prepare_raster_layer.py`; these metrics help locate drift but do not prove visual alignment.
 
@@ -202,7 +218,7 @@ An image-generated concept may contain:
 
 Reconstruct the chosen direction. Do not auto-trace and ship without cleanup. The generated bitmap is not proof of Icon Composer compatibility, correct masking, Xcode delivery, or App Store acceptance.
 
-For a pure bitmap/legacy deliverable, still remove artifacts, resize with a high-quality filter, verify opacity, embed a supported color profile when needed, and test the actual Xcode result.
+For the default finished-image or flattened platform deliverable, still remove artifacts, resize with a high-quality filter, verify opacity, embed a supported color profile when needed, and test the actual Xcode result when integration was requested. This is a complete route, not an inferior fallback.
 
 ## Provenance record
 

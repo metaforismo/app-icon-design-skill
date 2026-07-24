@@ -3,9 +3,9 @@
 [![Validate](https://github.com/metaforismo/app-icon-design-skill/actions/workflows/validate.yml/badge.svg)](https://github.com/metaforismo/app-icon-design-skill/actions/workflows/validate.yml)
 [![Source freshness](https://github.com/metaforismo/app-icon-design-skill/actions/workflows/source-freshness.yml/badge.svg)](https://github.com/metaforismo/app-icon-design-skill/actions/workflows/source-freshness.yml)
 
-![Exploded icon layers](assets/social-preview.png)
+![One finished Mood Lantern icon](assets/social-preview.png)
 
-Design distinctive app icons through a time-saving approval gate: iterate rapidly on whole-icon concepts, approve one, then reconstruct clean production layers and validate the result across Apple platforms.
+Design distinctive app icons through a fidelity-first workflow: iterate rapidly on whole-icon concepts, approve one, finish and validate that image, then stop unless editable or platform-specific production is actually requested.
 
 This repository contains the installable [`design-app-icons`](skills/design-app-icons/SKILL.md) Codex skill, current Apple platform guidance, a deterministic bitmap preflight tool, and four original image-generated case studies.
 
@@ -14,25 +14,37 @@ This repository contains the installable [`design-app-icons`](skills/design-app-
 ## What makes this different
 
 - **Concept before surface:** start from the app promise and one ownable silhouette.
-- **Approval before production:** iterate on inexpensive flattened concepts and pause for an explicit design lock before generating layers or opening Icon Composer.
+- **Image-first by default:** an approved 1024 px whole image plus static QA is a complete deliverable.
+- **Approval before optional production:** pause for an explicit design lock before generating layers, opening Icon Composer, or changing Xcode.
 - **Imagegen with boundaries:** use generated bitmaps for fast, original concept exploration—not as fake vector or `.icon` files.
-- **Two production routes:** reconstruct exact SVG geometry, or generate one raster role per image and prove its alpha, alignment, and composite.
-- **Current Liquid Glass workflow:** prepare SVG/PNG layers, use at most four Icon Composer groups, and validate current refraction/specular behavior.
+- **Fidelity before editability:** use a flattened asset when decomposition would damage shared lighting, glow, proportions, or material continuity.
+- **Optional production routes:** choose flattened platform delivery, minimal SVG reconstruction, or minimal Icon Composer sources only when requested.
+- **Current Liquid Glass workflow:** when appropriate, prepare the fewest SVG/PNG roles, use at most four Icon Composer groups, and validate current refraction/specular behavior.
 - **Platform-aware delivery:** distinguish Icon Composer from tvOS/visionOS asset catalogs and exact legacy-art requirements.
 - **Evidence, not vibes:** separate static preflight, Icon Composer, Xcode build, Simulator, device, store, and experiment evidence.
 - **Honest ASO testing:** design meaningful Product Page Optimization hypotheses without promising ranking or conversion lift.
 
-## The smart two-phase workflow
+## The shorter default workflow
 
 ```text
 Brief → whole-icon directions → targeted revisions → explicit approval
-      → SVG/raster layer plan → one role per source → recomposed proof
-      → Icon Composer → Xcode/Simulator → evidence-backed handoff
+      → final 1024 px image → static QA and small-size previews → stop
 ```
 
-Before approval, the skill generates or edits only flattened concept masters. Each retained revision gets a stable version, and the prior accepted candidate remains available for comparison. It does not spend time generating transparent components, drawing final SVGs, changing Xcode, or creating Composer evidence for a design that may still be rejected.
+Before approval, the skill generates or edits only flattened whole-icon images. Each retained revision gets a stable version, and the prior accepted candidate remains available for comparison. It does not spend time generating transparent components, drawing SVGs, changing Xcode, or creating Composer evidence for a design that may still be rejected.
 
-After the user says a clear equivalent of “I approve B3,” the skill records the approved artifact, digest, recognition anchor, protected invariants, permitted production translations, and layer plan. It then creates one production role per SVG or PNG, compares the recomposed proof with the approved concept at full size and 32 px, and continues through Composer and platform validation. A material design drift returns to the approval gate rather than being silently introduced during reconstruction.
+After the user says a clear equivalent of “I approve B3,” the skill preserves that image, performs only requested cleanup, exports an opaque unmasked 1024 × 1024 PNG, runs deterministic preflight, and stops.
+
+Only an explicit production request opens a second branch:
+
+```text
+Approved image
+├── exact integrated look → flattened Xcode/asset-catalog delivery
+├── simple editable geometry → minimal SVG reconstruction
+└── requested dynamic material → minimal Icon Composer sources
+```
+
+Every optional source-based route must recompose against the approved image at full size and 32 px. If proportions, seams, glow, lighting continuity, or the recognition anchor become worse, the decomposition is rejected and the whole image remains authoritative.
 
 ## Original example directions
 
@@ -60,7 +72,7 @@ Quiet Tide goes beyond the concept master. It includes deliberate SVG reconstruc
 
 The `.icon` package is an actual tool-authored document—not a renamed folder or teaching approximation. Physical-device, App Review, and conversion outcomes remain explicitly untested.
 
-Mood Lantern demonstrates the alternative [layer-first Imagegen workflow](examples/mood-lantern/layer-first/README.md): one backdrop, shell, and glow per generation; actual alpha inspection; key-color cleanup; and a reproducible composite.
+Mood Lantern demonstrates why layer generation is not the default. The [layer-first experiment](examples/mood-lantern/layer-first/README.md) proves alpha inspection and reproducible compositing, but the result is visually worse than the approved concept: the glow becomes a separate disk, the shell and trim harden, proportions drift, and shared lighting breaks. The repository retains it as a negative test, not a recommended production path.
 
 [![Mood Lantern assembled proof](examples/mood-lantern/layer-first/assembled-proof.png)](examples/mood-lantern/layer-first/README.md)
 
@@ -69,7 +81,7 @@ Mood Lantern demonstrates the alternative [layer-first Imagegen workflow](exampl
 Clone a tagged release and run the local installer:
 
 ```bash
-git clone --depth 1 --branch v1.1.0 https://github.com/metaforismo/app-icon-design-skill.git
+git clone --depth 1 --branch v1.2.0 https://github.com/metaforismo/app-icon-design-skill.git
 cd app-icon-design-skill
 ./scripts/install.sh
 ```
@@ -91,7 +103,9 @@ Example requests:
 - “Audit this existing iOS icon at small sizes and explain what actually needs redesign.”
 - “Use these screenshots only as style references and generate an original icon.”
 - “Iterate on direction B until I approve it; do not create layers or use Icon Composer before then.”
-- “I approve concept B3. Lock it, create the image layer by layer, and complete the Icon Composer handoff.”
+- “I approve concept B3. Finalize the image, audit it at small sizes, and stop.”
+- “I approve concept B3. Integrate the exact flattened artwork into this Xcode project.”
+- “I approve concept B3. Assess whether layers would preserve it before using Icon Composer.”
 - “Plan SVG layers for Icon Composer and test Default, Dark, Clear, and Tinted appearances.”
 - “Migrate this Xcode project from `AppIcon.appiconset` to an `.icon` file without losing the old artwork.”
 - “Create three Product Page Optimization icon hypotheses and define what evidence would select a winner.”

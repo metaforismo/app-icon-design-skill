@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.0 — 2026-07-24
+
+- Made the approved finished image plus static QA the complete default deliverable.
+- Replaced mandatory post-approval layer production with four explicit routes: image-only, flattened platform delivery, minimal SVG, and minimal Icon Composer.
+- Added a fidelity gate that rejects decomposition when proportions, seams, glow, lighting continuity, or recognition anchors drift.
+- Reclassified Mood Lantern’s layer-first assembly as a negative example and documented why integrated rendering should remain flattened.
+- Replaced the exploded technical social preview with a single finished-icon presentation.
+- Updated routing tests, repository validation, handoff guidance, and skill metadata for the shorter workflow.
+
 ## 1.1.0 — 2026-07-24
 
 - Added an explicit two-phase workflow: inexpensive whole-icon iteration first, production only after user approval.

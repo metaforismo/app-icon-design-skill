@@ -1,4 +1,4 @@
 interface:
   display_name: "App Icon Studio"
   short_description: "Design and validate distinctive Apple app icons"
-  default_prompt: "Use $design-app-icons to iterate on original iOS icon concepts, pause for my explicit approval, then create and validate the production layers and Icon Composer handoff."
+  default_prompt: "Use $design-app-icons to iterate on original iOS icon concepts, pause for my explicit approval, then finalize and audit the approved whole image; use layers or Icon Composer only if I request them and fidelity is preserved."

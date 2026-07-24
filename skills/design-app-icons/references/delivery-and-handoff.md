@@ -3,6 +3,7 @@
 ## Contents
 
 - [Recommended package](#recommended-package)
+- [Finished-image package](#finished-image-package)
 - [Icon Composer package](#icon-composer-package)
 - [Asset-catalog package](#asset-catalog-package)
 - [Concept-only package](#concept-only-package)
@@ -10,6 +11,8 @@
 - [Handoff checklist](#handoff-checklist)
 
 ## Recommended package
+
+Use the smallest package that matches the request. The full tree below is for an editable platform handoff, not the default output.
 
 ```text
 app-icon/
@@ -39,6 +42,24 @@ app-icon/
 ```
 
 Use only applicable files. Keep `design-approval.yaml` in `exploring-not-approved` state for a concept-only handoff. Do not create production sources or fabricate a `.icon` file when explicit approval and Icon Composer use have not occurred.
+
+## Finished-image package
+
+This is the default after the user approves a whole-image concept:
+
+```text
+app-icon/
+├── app-icon-1024.png
+├── prompt.md
+├── provenance.yaml
+├── previews/
+│   └── small-sizes/
+└── qa/
+    ├── audit.json
+    └── status.md
+```
+
+Preserve the approved integrated rendering. Do not add an editable source, layer set, `.icon` document, build log, or device claim that was not requested and validated.
 
 ## Icon Composer package
 
@@ -95,15 +116,16 @@ This is a valid handoff when the user requested ideation rather than platform in
 - [ ] Rights and source roles recorded
 - [ ] Selected direction and rejected risks explained
 - [ ] Explicit approval, approved version, artifact digest, and protected invariants recorded
-- [ ] Production composite compared with the approved concept at full size and 32 px
+- [ ] Selected route recorded: finished image, flattened platform asset, minimal SVG, or Icon Composer
+- [ ] Production composite compared with the approved concept at full size and 32 px when layers exist
 - [ ] Final prompt and generation mode recorded
-- [ ] Editable production source present
-- [ ] Unmasked layers exported
+- [ ] Editable production source present when requested
+- [ ] Unmasked layers exported when requested
 - [ ] Platform sizes verified
 - [ ] Small-size previews present
 - [ ] Appearance/mask matrix reviewed
-- [ ] Xcode source selected
-- [ ] Build succeeds
+- [ ] Xcode source selected when integration was requested
+- [ ] Build succeeds when integration was requested
 - [ ] Simulator/device status explicit
 - [ ] Store status explicit
 - [ ] Unverified claims labeled

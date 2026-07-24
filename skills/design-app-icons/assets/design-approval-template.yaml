@@ -24,6 +24,7 @@ design_lock:
     - recreate platform-owned glass, shadow, refraction, and specular effects in Icon Composer
 production_plan:
   authorized: false
+  delivery_route: unselected
   layers:
     - order: 1
       id: 01-backdrop
@@ -32,5 +33,5 @@ production_plan:
       reason: replace-with-reason
   reapproval_triggers:
     - changed metaphor or recognition anchor
-    - materially changed silhouette, composition, focal scale, or palette
+    - materially changed silhouette, composition, focal scale, palette, or lighting continuity
     - layer composite no longer matches the approved concept at full size and 32 px

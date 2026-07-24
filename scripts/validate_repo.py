@@ -88,9 +88,13 @@ def validate_skill(result: Result) -> None:
 
     required_gate_phrases = (
         "Phase 1 — Explore and iterate",
-        "Gate 1 — Record the approved design",
-        "Phase 2 — Produce after approval",
+        "Gate 1 — Lock the approved image",
+        "Phase 2 — Choose one post-approval delivery route",
+        "Image-only — default",
+        "This is the complete default workflow",
+        "The Mood Lantern example is the canonical negative case",
         "Exploring — not approved",
+        "Approved — image finalization authorized",
         "Approved — production authorized",
         "Production blocked — re-approval required",
     )
@@ -106,6 +110,8 @@ def validate_skill(result: Result) -> None:
             result.error("design-approval-template.yaml must default explicitly_approved to false")
         if approval.get("production_plan", {}).get("authorized") is not False:
             result.error("design-approval-template.yaml must default production authorization to false")
+        if approval.get("production_plan", {}).get("delivery_route") != "unselected":
+            result.error("design-approval-template.yaml must default delivery_route to unselected")
 
 
 def validate_agent_metadata(result: Result) -> None:
@@ -247,6 +253,7 @@ def validate_repo_hygiene(result: Result) -> None:
         ROOT / ".github" / "workflows" / "source-freshness.yml",
         ROOT / "docs" / "source-manifest.yaml",
         ROOT / "docs" / "release-notes-v1.1.0.md",
+        ROOT / "docs" / "release-notes-v1.2.0.md",
         ROOT / "scripts" / "check_sources.py",
         ROOT / "scripts" / "install.sh",
         ROOT / "scripts" / "package_skill.py",
@@ -258,6 +265,12 @@ def validate_repo_hygiene(result: Result) -> None:
     for path in required:
         if not path.is_file():
             result.error(f"Missing repository file: {path.relative_to(ROOT)}")
+
+    social_preview = ROOT / "assets" / "social-preview.png"
+    if social_preview.is_file():
+        with Image.open(social_preview) as image:
+            if image.size != (1280, 640):
+                result.error(f"Social preview must be 1280×640, found {image.size}")
 
     # Assemble these values so the validator does not flag its own source while
     # still rejecting leaked attachment and temporary paths elsewhere.

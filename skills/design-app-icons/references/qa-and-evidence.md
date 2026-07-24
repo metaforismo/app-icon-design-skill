@@ -15,9 +15,9 @@
 Use explicit labels:
 
 1. **Concept inspected:** generated or drawn image reviewed at full size.
-2. **Design approved:** the user explicitly authorized a named concept for production and the design lock was recorded.
-3. **Production fidelity checked:** recomposed SVG/PNG sources compared with the approved concept at full size and 32 px.
-4. **Static preflight passed:** dimensions, mode, alpha, and small previews checked.
+2. **Design approved:** the user explicitly approved a named image. This can authorize image finalization without authorizing layers or app changes.
+3. **Final image preflight passed:** approved whole image checked at 1024 px and small sizes.
+4. **Production fidelity checked:** when sources exist, recomposed SVG/PNG sources compared with the approved concept at full size and 32 px.
 5. **Icon Composer previewed:** platforms, appearances, material, and masks observed.
 6. **Xcode build validated:** target setting and successful build observed.
 7. **Simulator validated:** icon observed in system context.
@@ -61,6 +61,18 @@ python3 scripts/icon_qa.py 02-primary.png \
 ```
 
 Alpha validity is necessary but not sufficient. Inspect antialiased boundaries at 100–400% over black, white, neutral gray, and a saturated color. Reject key-color spill, magenta/green fringe, single-pixel halos, and geometry that only appears aligned because another layer hides the seam.
+
+## Fidelity gate for optional layers
+
+Layer production fails when its recomposed proof is visibly worse than the approved whole image. Compare both at 1024 px and 32 px. Reject the decomposition when any of these change materially:
+
+- silhouette or proportions
+- focal scale or composition
+- face or recognition-anchor placement
+- integrated glow, reflected light, or material continuity
+- seam softness, edge character, or palette
+
+Do not average these failures into a vague “close enough” result. Return to the approved flattened image or request approval for a deliberately changed concept.
 
 Use `scripts/icon_qa.py` for repeatable dimension, format, embedded-profile, alpha, and preview checks. Its rounded-rectangle and circular masks are deliberately approximate context masks, not Apple production geometry.
 

@@ -19,14 +19,16 @@ Icon Composer creates a single multilayer `.icon` file for iPhone, iPad, Mac, Ap
 
 Apple’s 2026 refinement adds sharper material rendering, selectable refraction, updated specular highlights, shadows, and earlier-release previews. Treat these controls as current tooling, not as bitmap filters to imitate before import.
 
+Icon Composer is an optional delivery tool, not the default destination for every approved image. Choose it only when the user requests current multilayer Apple delivery and the design can be separated without losing its approved visual. Prefer a flattened asset workflow when exact integrated pixels matter more than dynamic material.
+
 ## Prepare source artwork
 
-For a new icon or redesign, require `Approved — production authorized` and a completed `design-approval.yaml` before preparing sources. A Liquid Glass migration of already-approved owned artwork may treat that supplied artwork as the approved concept when the user explicitly requests production.
+For a new icon or redesign, require `Approved — production authorized`, an explicit request for Composer delivery, and a completed `design-approval.yaml` before preparing sources. A Liquid Glass migration of already-approved owned artwork may treat that supplied artwork as the approved concept when the user explicitly requests production.
 
 1. Start from the latest Apple Design Resources app-icon template.
 2. Use 1024 × 1024 for iPhone, iPad, and Mac; use 1088 × 1088 for Apple Watch.
 3. Draw back-to-front layers in a vector editor.
-4. Separate only the graphics that need independent color, material, appearance, platform, or depth behavior.
+4. Separate only the graphics that need independent color, material, appearance, platform, or depth behavior. Keep shared lighting, bloom, reflections, and painterly continuity flattened when separation would break them.
 5. Convert essential text to outlines because SVG does not preserve fonts.
 6. Name exports numerically, such as `01-wave.svg`, `02-sun.svg`, and `03-accent.svg`.
 7. Remove effects that Icon Composer should own: blur, shadow, specular, opacity, translucency, background color, and background gradient.
@@ -39,7 +41,7 @@ Do not force a complex illustration into many depth slices. Apple documents a ma
 
 Open the latest Xcode and choose **Xcode > Open Developer Tool > Icon Composer**, or use Apple’s standalone download.
 
-Before opening Composer, recompose the exported SVG/PNG sources and compare the result with the approved concept. If metaphor, silhouette, composition, focal scale, or palette drifted materially, return to concept review and obtain re-approval.
+Before opening Composer, recompose the exported SVG/PNG sources and compare the result with the approved concept. If metaphor, silhouette, composition, focal scale, palette, or lighting continuity drifted materially, stop the layer route. Prefer the approved flattened image; return to concept review only when the user wants a changed design.
 
 1. Create and save a file with the intended Xcode app-icon name, commonly `AppIcon.icon`.
 2. In the Document inspector, enable only the supported platforms to reduce accidental variations.
