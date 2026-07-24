@@ -80,7 +80,7 @@ For routes 3 and 4, freeze the coordinate, lighting, palette, and optical-alignm
 
 Treat integrated soft lighting, shared reflections, translucent glow bleeding through a shell, painterly shading, fur, glass, and organic material continuity as strong signals for a flattened image. A generated image may be a successful final visual even when it is a poor layer source.
 
-The Mood Lantern example is the canonical negative case: its approved concept has continuous shell shading and an integrated amber glow. Separating the shell and glow produced harder rings, a detached luminous disk, altered proportions, changed face placement, and less coherent lighting. The correct fidelity-first route is the approved whole image, not the assembled proof.
+Treat a visibly degraded reconstruction as a failed delivery route, not as progress. Do not display or ship an inferior layered proof merely because its files are technically valid; preserve the approved whole image instead.
 
 Keep intermediate status explicit:
 

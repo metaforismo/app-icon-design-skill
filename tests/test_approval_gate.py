@@ -26,7 +26,7 @@ class ApprovalGateTests(unittest.TestCase):
     def test_layer_route_is_fidelity_gated(self) -> None:
         text = (SKILL / "SKILL.md").read_text(encoding="utf-8")
         self.assertIn("If fidelity is worse, stop and use route 1 or 2", text)
-        self.assertIn("The Mood Lantern example is the canonical negative case", text)
+        self.assertIn("Do not display or ship an inferior layered proof", text)
 
     def test_approval_template_defaults_to_locked_off(self) -> None:
         data = yaml.safe_load(

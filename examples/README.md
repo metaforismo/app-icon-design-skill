@@ -9,8 +9,6 @@ These examples cover four distinct visual families so the skill demonstrates con
 | Mood Lantern | Mascot | reflect on feelings | lantern character with warm core | 4 |
 | Orbit Stack | Liquid Glass system | layered spatial notes | three diamonds and a spark | 4 |
 
-Mood Lantern includes a second workflow: Imagegen creates one visual role per call, a deterministic key-color pass creates true alpha, and the alpha-normalized candidates are recomposed into a reviewable icon proof. Its raw baked-checkerboard outputs and the current fringe/seam rejection are retained so the example does not imply that requested transparency or production quality was delivered.
-
 Workflow used:
 
 1. Analyze the private reference set into broad visual families.
@@ -23,4 +21,4 @@ Workflow used:
 8. Record explicit design approval before production reconstruction or Icon Composer.
 9. Record the prompt, role, rationale, production reconstruction plan, and evidence boundary.
 
-Quiet Tide demonstrates deliberate SVG reconstruction and a real Icon Composer/Xcode/Simulator path for geometry that survives separation. Mood Lantern demonstrates a rejected raster layer-first route and why the approved flattened image can be the better final. The other concept masters remain flat PNGs and do not claim production validation.
+Quiet Tide demonstrates deliberate SVG reconstruction and a real Icon Composer/Xcode/Simulator path for geometry that survives separation. Mood Lantern demonstrates why an approved flattened image can be the better final when shared glow and shading do not survive separation. The other concept masters remain flat PNGs and do not claim production validation.

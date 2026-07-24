@@ -77,7 +77,7 @@ Do not decompose a successful image merely because separate layers sound more pr
 
 Before choosing layers, ask one question: `Can these roles be separated and recomposed without changing the approved visual?` If the answer is uncertain, use the finished image. If a proof changes the silhouette, proportions, focal scale, lighting continuity, seam softness, face placement, or palette, reject the decomposition and return to the approved image.
 
-Mood Lantern is the reference failure. Its whole-image concept is coherent because the warm core illuminates the same body that contains it. The separated proof turned the glow into a disk, hardened the aperture and trim, altered proportions, and broke the shared lighting. The correct outcome is not “more layer repair”; it is an image-only final or flattened platform asset.
+A technically valid alpha set can still be the wrong production route. Reject a separated proof when an integrated glow turns into a detached disk, soft seams harden, proportions drift, or shared lighting breaks.
 
 ## Base prompt
 

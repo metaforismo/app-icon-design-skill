@@ -92,7 +92,7 @@ def validate_skill(result: Result) -> None:
         "Phase 2 — Choose one post-approval delivery route",
         "Image-only — default",
         "This is the complete default workflow",
-        "The Mood Lantern example is the canonical negative case",
+        "Do not display or ship an inferior layered proof",
         "Exploring — not approved",
         "Approved — image finalization authorized",
         "Approved — production authorized",
@@ -121,14 +121,35 @@ def validate_agent_metadata(result: Result) -> None:
         return
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     interface = data.get("interface", {}) if isinstance(data, dict) else {}
-    required = {"display_name", "short_description", "default_prompt"}
+    required = {
+        "display_name",
+        "short_description",
+        "icon_small",
+        "icon_large",
+        "brand_color",
+        "default_prompt",
+    }
     if set(interface) != required:
-        result.error("agents/openai.yaml interface must contain the three generated fields only")
+        result.error("agents/openai.yaml interface does not match the generated identity fields")
     short = interface.get("short_description", "")
     if not 25 <= len(short) <= 64:
         result.error("short_description must be 25-64 characters")
     if "$design-app-icons" not in interface.get("default_prompt", ""):
         result.error("default_prompt must mention $design-app-icons")
+
+    icon_expectations = {
+        "icon_small": (400, 400),
+        "icon_large": (1024, 1024),
+    }
+    for key, expected_size in icon_expectations.items():
+        relative = interface.get(key, "")
+        icon_path = SKILL / relative.removeprefix("./")
+        if not icon_path.is_file():
+            result.error(f"{key} does not resolve to a file: {relative}")
+            continue
+        with Image.open(icon_path) as image:
+            if image.size != expected_size:
+                result.error(f"{key} must be {expected_size}, found {image.size}")
 
 
 def validate_examples(result: Result) -> None:
@@ -208,39 +229,6 @@ def validate_examples(result: Result) -> None:
         if layer_names != {"01-backdrop.svg", "02-sun.svg", "03-wave.svg"}:
             result.error("QuietTide.icon must contain the three expected SVG layers")
 
-    mood_layers = examples / "mood-lantern" / "layer-first"
-    for relative in (
-        "README.md",
-        "prompts.md",
-        "raw/01-backdrop.png",
-        "raw/02-lantern-shell.png",
-        "raw/03-amber-glow.png",
-        "raw/02-lantern-shell-key.png",
-        "raw/03-amber-glow-key.png",
-        "candidate/01-backdrop.png",
-        "candidate/02-amber-glow.png",
-        "candidate/03-lantern-shell.png",
-        "assembled-proof.png",
-        "qa/glow-cleanup.json",
-        "qa/shell-cleanup.json",
-        "qa/glow-audit.json",
-        "qa/shell-audit.json",
-        "qa/static-audit.json",
-        "qa/previews/assembled-proof-ios-appearance-sheet.png",
-    ):
-        if not (mood_layers / relative).is_file():
-            result.error(f"Mood Lantern layer-first evidence is missing {relative}")
-
-    for relative in ("candidate/02-amber-glow.png", "candidate/03-lantern-shell.png"):
-        with Image.open(mood_layers / relative) as image:
-            if image.size != (1024, 1024) or image.mode != "RGBA":
-                result.error(f"Mood Lantern {relative} must be a 1024x1024 RGBA layer")
-
-    with Image.open(mood_layers / "assembled-proof.png") as image:
-        if image.size != (1024, 1024) or image.mode != "RGB":
-            result.error("Mood Lantern assembled proof must be an opaque 1024x1024 RGB PNG")
-
-
 def validate_repo_hygiene(result: Result) -> None:
     required = [
         ROOT / "README.md",
@@ -254,10 +242,12 @@ def validate_repo_hygiene(result: Result) -> None:
         ROOT / "docs" / "source-manifest.yaml",
         ROOT / "docs" / "release-notes-v1.1.0.md",
         ROOT / "docs" / "release-notes-v1.2.0.md",
+        ROOT / "docs" / "release-notes-v1.3.0.md",
         ROOT / "scripts" / "check_sources.py",
         ROOT / "scripts" / "install.sh",
         ROOT / "scripts" / "package_skill.py",
         ROOT / "assets" / "social-preview.png",
+        ROOT / "assets" / "app-icon-studio.png",
         ROOT / "assets" / "social-preview-prompt.md",
         ROOT / "experiments" / "quiet-tide-ppo" / "experiment.yaml",
         ROOT / "experiments" / "quiet-tide-ppo" / "result-template.md",
@@ -271,6 +261,21 @@ def validate_repo_hygiene(result: Result) -> None:
         with Image.open(social_preview) as image:
             if image.size != (1280, 640):
                 result.error(f"Social preview must be 1280×640, found {image.size}")
+
+    identity = ROOT / "assets" / "app-icon-studio.png"
+    if identity.is_file():
+        with Image.open(identity) as image:
+            if image.size != (1024, 1024):
+                result.error(f"App Icon Studio identity must be 1024×1024, found {image.size}")
+
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    for stale_presentation in (
+        "Mood Lantern assembled proof",
+        "one-element-per-image raster workflows",
+        "examples/mood-lantern/layer-first/assembled-proof.png",
+    ):
+        if stale_presentation in readme:
+            result.error(f"README still presents stale material: {stale_presentation}")
 
     # Assemble these values so the validator does not flag its own source while
     # still rejecting leaked attachment and temporary paths elsewhere.

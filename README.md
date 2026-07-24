@@ -3,191 +3,99 @@
 [![Validate](https://github.com/metaforismo/app-icon-design-skill/actions/workflows/validate.yml/badge.svg)](https://github.com/metaforismo/app-icon-design-skill/actions/workflows/validate.yml)
 [![Source freshness](https://github.com/metaforismo/app-icon-design-skill/actions/workflows/source-freshness.yml/badge.svg)](https://github.com/metaforismo/app-icon-design-skill/actions/workflows/source-freshness.yml)
 
-![One finished Mood Lantern icon](assets/social-preview.png)
+![App Icon Studio identity](assets/social-preview.png)
 
-Design distinctive app icons through a fidelity-first workflow: iterate rapidly on whole-icon concepts, approve one, finish and validate that image, then stop unless editable or platform-specific production is actually requested.
+`$design-app-icons` is a Codex skill for creating, revising, and validating original app icons. It is iOS-first, uses the built-in Imagegen workflow, and treats the approved whole image as the default final artwork.
 
-This repository contains the installable [`design-app-icons`](skills/design-app-icons/SKILL.md) Codex skill, current Apple platform guidance, a deterministic bitmap preflight tool, and four original image-generated case studies.
-
-> Current-source snapshot: **24 July 2026**. Apple’s icon tooling is active and versioned; the skill tells agents to re-check official documentation before release work.
-
-## What makes this different
-
-- **Concept before surface:** start from the app promise and one ownable silhouette.
-- **Image-first by default:** an approved 1024 px whole image plus static QA is a complete deliverable.
-- **Approval before optional production:** pause for an explicit design lock before generating layers, opening Icon Composer, or changing Xcode.
-- **Imagegen with boundaries:** use generated bitmaps for fast, original concept exploration—not as fake vector or `.icon` files.
-- **Fidelity before editability:** use a flattened asset when decomposition would damage shared lighting, glow, proportions, or material continuity.
-- **Optional production routes:** choose flattened platform delivery, minimal SVG reconstruction, or minimal Icon Composer sources only when requested.
-- **Current Liquid Glass workflow:** when appropriate, prepare the fewest SVG/PNG roles, use at most four Icon Composer groups, and validate current refraction/specular behavior.
-- **Platform-aware delivery:** distinguish Icon Composer from tvOS/visionOS asset catalogs and exact legacy-art requirements.
-- **Evidence, not vibes:** separate static preflight, Icon Composer, Xcode build, Simulator, device, store, and experiment evidence.
-- **Honest ASO testing:** design meaningful Product Page Optimization hypotheses without promising ranking or conversion lift.
-
-## The shorter default workflow
+## The default flow
 
 ```text
 Brief → whole-icon directions → targeted revisions → explicit approval
-      → final 1024 px image → static QA and small-size previews → stop
+      → final 1024 × 1024 image → small-size and static QA → stop
 ```
 
-Before approval, the skill generates or edits only flattened whole-icon images. Each retained revision gets a stable version, and the prior accepted candidate remains available for comparison. It does not spend time generating transparent components, drawing SVGs, changing Xcode, or creating Composer evidence for a design that may still be rejected.
+The skill generates one complete icon at a time. It keeps the selected version stable, applies focused revisions, and waits for the user to explicitly approve a named image.
 
-After the user says a clear equivalent of “I approve B3,” the skill preserves that image, performs only requested cleanup, exports an opaque unmasked 1024 × 1024 PNG, runs deterministic preflight, and stops.
+After approval, it preserves that image and stops after export and QA. It does not automatically generate components, reconstruct SVGs, open Icon Composer, or modify Xcode.
 
-Only an explicit production request opens a second branch:
+Optional production work begins only when the user asks for it:
 
-```text
-Approved image
-├── exact integrated look → flattened Xcode/asset-catalog delivery
-├── simple editable geometry → minimal SVG reconstruction
-└── requested dynamic material → minimal Icon Composer sources
-```
+- integrate the approved flattened artwork into an app project;
+- reconstruct simple, deliberate editable geometry;
+- prepare minimal Icon Composer sources when separation preserves the design;
+- audit an existing icon, alternate icon, or App Store experiment.
 
-Every optional source-based route must recompose against the approved image at full size and 32 px. If proportions, seams, glow, lighting continuity, or the recognition anchor become worse, the decomposition is rejected and the whole image remains authoritative.
-
-## Original example directions
-
-The examples were generated with the built-in image-generation tool from original fictional briefs. User-supplied icons informed only broad visual families and are not redistributed.
-
-| Quiet Tide | Parcel Pulse |
-| --- | --- |
-| [![Quiet Tide concept](examples/quiet-tide/concept-master.png)](examples/quiet-tide/case-study.md) | [![Parcel Pulse concept](examples/parcel-pulse/concept-master.png)](examples/parcel-pulse/case-study.md) |
-| Layered abstract identity: one wave, one sun, one silhouette. | Tactile utility metaphor: one parcel, one scan action. |
-
-| Mood Lantern | Orbit Stack |
-| --- | --- |
-| [![Mood Lantern concept](examples/mood-lantern/concept-master.png)](examples/mood-lantern/case-study.md) | [![Orbit Stack concept](examples/orbit-stack/concept-master.png)](examples/orbit-stack/case-study.md) |
-| Expressive mascot: calm emotion and one luminous core. | Liquid Glass system: three layers and one bright anchor. |
-
-Each case study includes the full prompt, rationale, reconstruction plan, limitations, and provenance. Unless a case explicitly says otherwise, it is a **concept master**, not an Icon Composer file or device-validated shipping icon.
-
-## Production evidence
-
-Quiet Tide goes beyond the concept master. It includes deliberate SVG reconstruction, a real Icon Composer document created in Icon Composer 1.6, an XcodeGen fixture, a successful Xcode 26.6 build, and iOS 26.5 Simulator evidence.
-
-| Icon Composer export | iOS Simulator Home Screen |
-| --- | --- |
-| [![Quiet Tide production export](examples/quiet-tide/production/evidence/export-default.png)](examples/quiet-tide/redesign-comparison.md) | [![Quiet Tide on Simulator](examples/quiet-tide/production/evidence/simulator-home.png)](examples/quiet-tide/production/evidence.md) |
-
-The `.icon` package is an actual tool-authored document—not a renamed folder or teaching approximation. Physical-device, App Review, and conversion outcomes remain explicitly untested.
-
-Mood Lantern demonstrates why layer generation is not the default. The [layer-first experiment](examples/mood-lantern/layer-first/README.md) proves alpha inspection and reproducible compositing, but the result is visually worse than the approved concept: the glow becomes a separate disk, the shell and trim harden, proportions drift, and shared lighting breaks. The repository retains it as a negative test, not a recommended production path.
-
-[![Mood Lantern assembled proof](examples/mood-lantern/layer-first/assembled-proof.png)](examples/mood-lantern/layer-first/README.md)
+If an editable reconstruction changes the silhouette, proportions, lighting, glow, material continuity, or recognition anchor, the reconstruction is rejected and the approved image remains authoritative.
 
 ## Install
 
-Clone a tagged release and run the local installer:
-
 ```bash
-git clone --depth 1 --branch v1.2.0 https://github.com/metaforismo/app-icon-design-skill.git
+git clone --depth 1 --branch v1.3.0 https://github.com/metaforismo/app-icon-design-skill.git
 cd app-icon-design-skill
 ./scripts/install.sh
 ```
 
-Or copy the installable skill folder from an existing checkout:
+Or copy the installable folder:
 
 ```bash
 cp -R skills/design-app-icons "${CODEX_HOME:-$HOME/.codex}/skills/"
 ```
 
-Then invoke it explicitly:
+Invoke it explicitly:
 
 ```text
-Use $design-app-icons to create three original icon directions for a private journaling app.
+Use $design-app-icons to create three original whole-icon directions for a private journaling app. Iterate on my selected direction until I explicitly approve it, then export and audit the final image.
 ```
 
-Example requests:
+Other useful requests:
 
-- “Audit this existing iOS icon at small sizes and explain what actually needs redesign.”
-- “Use these screenshots only as style references and generate an original icon.”
-- “Iterate on direction B until I approve it; do not create layers or use Icon Composer before then.”
-- “I approve concept B3. Finalize the image, audit it at small sizes, and stop.”
-- “I approve concept B3. Integrate the exact flattened artwork into this Xcode project.”
-- “I approve concept B3. Assess whether layers would preserve it before using Icon Composer.”
-- “Plan SVG layers for Icon Composer and test Default, Dark, Clear, and Tinted appearances.”
-- “Migrate this Xcode project from `AppIcon.appiconset` to an `.icon` file without losing the old artwork.”
-- “Create three Product Page Optimization icon hypotheses and define what evidence would select a winner.”
+- “Audit this iOS icon at 16–256 px and prioritize the problems.”
+- “Edit this selected concept but change only the palette.”
+- “I approve version B3. Finalize the image, audit it, and stop.”
+- “Integrate this approved flattened icon into my Xcode project.”
+- “Assess whether this approved geometric design can survive Icon Composer separation.”
+- “Design three Product Page Optimization icon hypotheses without promising conversion lift.”
 
-## Repository map
+## What is included
 
-```text
-.
-├── skills/design-app-icons/
-│   ├── SKILL.md
-│   ├── agents/openai.yaml
-│   ├── assets/
-│   ├── references/
-│   └── scripts/
-├── examples/
-├── experiments/
-├── assets/
-├── docs/
-├── scripts/
-└── tests/
-```
+- the installable [`design-app-icons` skill](skills/design-app-icons/SKILL.md);
+- focused references for Apple platforms, Icon Composer, Liquid Glass, Imagegen, QA, delivery, and App Store experimentation;
+- a deterministic [`icon_qa.py`](skills/design-app-icons/scripts/icon_qa.py) preflight CLI;
+- four fictional, original concept studies: [Quiet Tide](examples/quiet-tide/case-study.md), [Parcel Pulse](examples/parcel-pulse/case-study.md), [Mood Lantern](examples/mood-lantern/case-study.md), and [Orbit Stack](examples/orbit-stack/case-study.md);
+- an optional, tool-authored Quiet Tide Icon Composer/Xcode/Simulator fixture for advanced delivery evidence.
 
-The skill itself stays progressively disclosed: the core workflow is in `SKILL.md`; detailed Apple specifications, Liquid Glass behavior, prompt recipes, visual taxonomy, QA, App Store experiments, delivery, and source boundaries live in focused references.
+The examples are learning material, not the identity of the skill. The App Icon Studio identity is the folded ribbon mark shown above.
 
 ## Static preflight
 
-Install the development dependencies:
+```bash
+python3 skills/design-app-icons/scripts/icon_qa.py path/to/icon.png \
+  --platform ios \
+  --role flattened \
+  --preview-dir work/icon-previews \
+  --report work/icon-audit.json
+```
+
+The CLI checks dimensions, format, alpha and edge behavior, color-profile presence, and small-size previews. Its masks and appearance transforms are heuristic stress tests. It does not validate Icon Composer material, Xcode target selection, Simulator, hardware, App Review, or conversion.
+
+## Validate the repository
 
 ```bash
 python3 -m venv .venv
 . .venv/bin/activate
 python3 -m pip install -r requirements-dev.txt
-```
-
-Audit an opaque iOS concept and create small-size previews:
-
-```bash
-python3 skills/design-app-icons/scripts/icon_qa.py \
-  examples/quiet-tide/concept-master.png \
-  --platform ios \
-  --role concept \
-  --preview-dir work/quiet-tide-previews \
-  --report work/quiet-tide-audit.json
-```
-
-The script checks platform dimensions, format, alpha, corner/edge behavior, and embedded color profile; it also generates aspect-preserving small-size and appearance stress-test previews. Masks and appearance transforms are intentionally heuristic. The CLI cannot validate Icon Composer material, the `.icon` document, Xcode target selection, Simulator, hardware, App Store review, or conversion.
-
-For one-element-per-image raster workflows, use:
-
-```bash
-python3 skills/design-app-icons/scripts/prepare_raster_layer.py \
-  raw-element.png candidate-element.png \
-  --key-color 0,255,0 --fit-box 240,64,784,946
-
-python3 skills/design-app-icons/scripts/compose_raster_layers.py \
-  backdrop.png glow.png shell.png --output assembled-proof.png
-```
-
-Always inspect the resulting edges. Chroma cleanup is a controlled fallback, not a guarantee that translucent glass or bloom separated cleanly.
-
-## Validate the repository
-
-```bash
 python3 scripts/validate_repo.py
 python3 -m unittest discover -s tests -v
 python3 /path/to/skill-creator/scripts/quick_validate.py skills/design-app-icons
 python3 scripts/package_skill.py
 ```
 
-CI runs the repository validator and tests. The last command is the canonical Codex skill validator and requires a local Codex installation.
+## Evidence boundaries
 
-## Source and legal boundaries
+- **Validated:** repository tests, canonical skill structure, static audits, and the checked-in Quiet Tide evidence explicitly labeled as validated.
+- **Prepared:** source files that exist but still require platform import or build.
+- **Not tested:** any Icon Composer, Xcode, Simulator, device, App Review, or conversion outcome not backed by named evidence.
 
-- Apple’s HIG, developer documentation, videos, and App Store Connect Help are the authority for current platform claims.
-- Secondary articles are inspiration and hypotheses, not authoritative Xcode specifications.
-- Apple Design Resources are linked rather than bundled.
-- The 61 user-supplied icon references are not committed.
-- Do not reproduce another developer’s icon, name, character, product, or Apple hardware.
-- Following the workflow does not guarantee App Review approval or conversion improvement.
+Current platform claims are grounded in Apple’s official documentation and recorded in the [source ledger](skills/design-app-icons/references/sources.md). The supplied third-party screenshots are not redistributed. Following the workflow does not guarantee App Review approval, ranking, or conversion improvement.
 
-See [Research notes](docs/research-notes.md), [machine-readable source manifest](docs/source-manifest.yaml), [Example methodology](examples/README.md), and the skill’s [source ledger](skills/design-app-icons/references/sources.md).
-
-## License
-
-Code, documentation, and original example assets are available under the [MIT License](LICENSE), to the extent the repository owner can grant those rights. Third-party trademarks remain their owners’ property.
+See the [changelog](CHANGELOG.md), [research notes](docs/research-notes.md), and [contribution guide](CONTRIBUTING.md). Code, documentation, and repository-owned example assets are available under the [MIT License](LICENSE), to the extent the repository owner can grant those rights.

@@ -2,7 +2,7 @@
 
 ![Mood Lantern concept](concept-master.png)
 
-The [layer-first experiment](layer-first/README.md) is intentionally retained as a negative fidelity test. It demonstrates one-element-per-generation assembly and the baked-checkerboard transparency failure, but it also proves that successful alpha cleanup does not make a visually faithful reconstruction.
+This concept is intentionally documented as a whole-image example. Its shared glow and body shading make it a poor candidate for automatic layer separation.
 
 ## Brief
 
@@ -39,6 +39,6 @@ Removing a ring, reducing eye highlights, flattening the face, or shrinking the 
 
 ## Status
 
-- **Validated:** original concept dimensions; actual alpha inspection of separated outputs; reproducible chroma cleanup and composite; static iOS audit of the assembled proof.
-- **Prepared:** approved-style whole-image concept, prompts, alpha-normalized raster candidates, and a rejected assembled proof; current candidates are not approved for import.
+- **Validated:** original concept dimensions and static image inspection.
+- **Prepared:** whole-image concept and reproducible prompt.
 - **Not tested:** Icon Composer import, Xcode, Simulator, device, App Store, or conversion.

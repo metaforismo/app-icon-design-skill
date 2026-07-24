@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.0 — 2026-07-24
+
+- Replaced case-study branding with a dedicated App Icon Studio folded-ribbon identity.
+- Added packaged small and large skill icons plus a matching GitHub social preview.
+- Rewrote the README around the current image-first flow and removed rejected reconstruction imagery from the main presentation.
+- Removed the rejected Mood Lantern raster-layer experiment and reduced copy that over-emphasized it.
+- Kept advanced platform delivery available without presenting it as the normal workflow.
+
 ## 1.2.0 — 2026-07-24
 
 - Made the approved finished image plus static QA the complete default deliverable.
