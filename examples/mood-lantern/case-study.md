@@ -22,13 +22,13 @@ The silhouette communicates “lantern” without a second prop. Large eyes and 
 - The warm light occupies a large area and can erase the body in clear or tinted appearances.
 - The body’s shading is too continuous to import as editable vector layers.
 
-## Recommended delivery
+## Production decision
 
-Keep the approved whole image as the authoritative final artwork. Its warm core, shell, face, and reflected light form one integrated rendering, so the default delivery is a flattened 1024 × 1024 image plus static QA.
+For a concept-only request, keep the whole image as the authoritative artwork. Its warm core, shell, face, and reflected light form one integrated rendering.
 
-If the user later needs a durable editable brand system, redesign a simpler vector-native version as a new approved concept. Do not claim that the separated proof preserves this image.
+For a shipping iOS icon, do not send this bitmap directly into layer production. Create a simpler frontal, vector-native `Composer-adapted production concept`, preserve the lantern silhouette and warm-core anchor, and return to the approval gate. Do not claim that an automatically separated proof preserves this image.
 
-An optional future Icon Composer reinterpretation could use four groups only after re-approval:
+A faithful Composer-oriented reinterpretation could use four groups only after re-approval:
 
 1. background fill in Icon Composer
 2. unified lantern silhouette including handle and base
@@ -40,5 +40,5 @@ Removing a ring, reducing eye highlights, flattening the face, or shrinking the 
 ## Status
 
 - **Validated:** original concept dimensions and static image inspection.
-- **Prepared:** whole-image concept and reproducible prompt.
+- **Prepared:** whole-image concept, reproducible prompt, and a proposed four-group adaptation plan requiring visual approval.
 - **Not tested:** Icon Composer import, Xcode, Simulator, device, App Store, or conversion.

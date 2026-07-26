@@ -43,7 +43,11 @@ class IconQATests(unittest.TestCase):
             )
             self.assertTrue(audit.passed)
             self.assertEqual(0, audit.nonopaque_pixels)
-            self.assertEqual(4, len(audit.preview_files))
+            self.assertEqual(5, len(audit.preview_files))
+            context_board = Path(audit.preview_files[-1])
+            self.assertTrue(context_board.name.endswith("-ios-context-board.png"))
+            with Image.open(context_board) as image:
+                self.assertEqual((1200, 760), image.size)
 
     def test_transparent_flattened_master_fails(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

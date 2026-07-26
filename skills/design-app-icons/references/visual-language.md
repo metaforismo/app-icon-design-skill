@@ -5,6 +5,7 @@
 - [Reference-set taxonomy](#reference-set-taxonomy)
 - [What transfers across styles](#what-transfers-across-styles)
 - [Direction scorecard](#direction-scorecard)
+- [Category collision map](#category-collision-map)
 - [Originality safeguards](#originality-safeguards)
 - [Common failure modes](#common-failure-modes)
 
@@ -56,6 +57,17 @@ Score 0-2 for each:
 
 Use the score as a discussion aid, not an automatic winner. A slightly lower-scoring direction may fit the brand better.
 
+## Category collision map
+
+Before generation, inspect current category neighbors when web research is allowed. Record patterns without downloading or redistributing third-party art:
+
+| Neighbor | Metaphor | Silhouette | Dominant palette | Composition | Collision to avoid |
+| --- | --- | --- | --- | --- | --- |
+
+Then state the three most crowded metaphors, the common color and silhouette families, one underused territory that still fits the product, and the proposed recognition anchor. Compare candidates in monochrome: a palette change does not resolve a structural collision.
+
+Treat generic sparkles, folded ribbons, infinity loops, chat bubbles, gradient stars, and orbit marks as high-risk in AI or creative-tool categories unless the design adds an ownable structural idea.
+
 ## Originality safeguards
 
 - Search category neighbors when the user authorizes web research.
@@ -79,4 +91,3 @@ Use the score as a discussion aid, not an automatic winner. A slightly lower-sco
 - Near-black watchOS background blending into the display
 - Different silhouettes for every appearance
 - “A/B variants” that only change hue and test no meaningful hypothesis
-

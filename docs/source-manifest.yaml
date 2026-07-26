@@ -1,5 +1,5 @@
 schema_version: 1
-verified_on: "2026-07-24"
+verified_on: "2026-07-26"
 sources:
   - id: apple-hig-app-icons
     title: Human Interface Guidelines - App icons

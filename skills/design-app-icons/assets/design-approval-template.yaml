@@ -25,6 +25,8 @@ design_lock:
 production_plan:
   authorized: false
   delivery_route: unselected
+  composer_feasibility: unassessed
+  composer_adaptation_requires_reapproval: true
   layers:
     - order: 1
       id: 01-backdrop

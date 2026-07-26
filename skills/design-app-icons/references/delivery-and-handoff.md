@@ -12,7 +12,7 @@
 
 ## Recommended package
 
-Use the smallest package that matches the request. The full tree below is for an editable platform handoff, not the default output.
+Use the smallest package that matches the request. The full tree below is the default for a shipping iOS, iPadOS, macOS, or watchOS icon; concept-only requests stop before production.
 
 ```text
 app-icon/
@@ -34,7 +34,8 @@ app-icon/
 │       └── app-icon-1024.png
 ├── previews/
 │   ├── small-sizes/
-│   └── appearance-matrix/
+│   ├── appearance-matrix/
+│   └── context-board/
 └── qa/
     ├── audit.json
     ├── build.txt
@@ -45,7 +46,7 @@ Use only applicable files. Keep `design-approval.yaml` in `exploring-not-approve
 
 ## Finished-image package
 
-This is the default after the user approves a whole-image concept:
+Use this only when the request explicitly ends at an approved image or when the user selects the flattened fallback:
 
 ```text
 app-icon/
@@ -59,7 +60,7 @@ app-icon/
     └── status.md
 ```
 
-Preserve the approved integrated rendering. Do not add an editable source, layer set, `.icon` document, build log, or device claim that was not requested and validated.
+Preserve the approved integrated rendering. State `Composer not used` and why. Do not add an editable source, `.icon` document, build log, or device claim that was not validated.
 
 ## Icon Composer package
 
@@ -71,10 +72,11 @@ Deliver:
 - `.icon` file from Icon Composer
 - flattened marketing export
 - screenshots of platform and appearance previews
+- screenshots over multiple backgrounds, lighting angles, and small Composer sizes
 - Xcode target association
 - build/runtime evidence
 
-Document group order and any per-platform overrides. Keep source art separate from the `.icon` file.
+Document the maximum-four-group structure, group mode (Individual or Combined), material decisions, appearance overrides, and platform overrides. Keep source art separate from the `.icon` file.
 
 ## Asset-catalog package
 
@@ -116,14 +118,16 @@ This is a valid handoff when the user requested ideation rather than platform in
 - [ ] Rights and source roles recorded
 - [ ] Selected direction and rejected risks explained
 - [ ] Explicit approval, approved version, artifact digest, and protected invariants recorded
-- [ ] Selected route recorded: finished image, flattened platform asset, minimal SVG, or Icon Composer
+- [ ] Composer-feasibility result recorded: faithful, adapted concept re-approved, or flattened fallback selected
 - [ ] Production composite compared with the approved concept at full size and 32 px when layers exist
 - [ ] Final prompt and generation mode recorded
 - [ ] Editable production source present when requested
 - [ ] Unmasked layers exported when requested
 - [ ] Platform sizes verified
 - [ ] Small-size previews present
+- [ ] Synthetic context board reviewed
 - [ ] Appearance/mask matrix reviewed
+- [ ] Composer backgrounds, lighting angles, and preview sizes reviewed
 - [ ] Xcode source selected when integration was requested
 - [ ] Build succeeds when integration was requested
 - [ ] Simulator/device status explicit

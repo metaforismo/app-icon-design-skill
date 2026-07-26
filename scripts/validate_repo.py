@@ -82,21 +82,23 @@ def validate_skill(result: Result) -> None:
             result.error(f"Missing {script_name}")
     if not (SKILL / "assets" / "layer-composition-template.yaml").is_file():
         result.error("Missing layer-composition-template.yaml")
+    if not (SKILL / "assets" / "concept-review-template.md").is_file():
+        result.error("Missing concept-review-template.md")
     approval_template = SKILL / "assets" / "design-approval-template.yaml"
     if not approval_template.is_file():
         result.error("Missing design-approval-template.yaml")
 
     required_gate_phrases = (
-        "Phase 1 — Explore and iterate",
-        "Gate 1 — Lock the approved image",
-        "Phase 2 — Choose one post-approval delivery route",
-        "Image-only — default",
-        "This is the complete default workflow",
-        "Do not display or ship an inferior layered proof",
+        "Default workflow",
+        "Gate A — Lock visual approval",
+        "Gate B — Decide whether the design can become a faithful Composer icon",
+        "Do not automatically generate three directions",
+        "Composer-adapted production concept",
+        "Use the actual Apple app",
         "Exploring — not approved",
-        "Approved — image finalization authorized",
-        "Approved — production authorized",
-        "Production blocked — re-approval required",
+        "Validated",
+        "Prepared",
+        "Not tested",
     )
     for phrase in required_gate_phrases:
         if phrase not in body:
@@ -112,6 +114,21 @@ def validate_skill(result: Result) -> None:
             result.error("design-approval-template.yaml must default production authorization to false")
         if approval.get("production_plan", {}).get("delivery_route") != "unselected":
             result.error("design-approval-template.yaml must default delivery_route to unselected")
+        if approval.get("production_plan", {}).get("composer_feasibility") != "unassessed":
+            result.error("design-approval-template.yaml must default Composer feasibility to unassessed")
+        if approval.get("production_plan", {}).get("composer_adaptation_requires_reapproval") is not True:
+            result.error("Composer adaptations must require reapproval by default")
+
+    layer_template = SKILL / "assets" / "layer-composition-template.yaml"
+    if layer_template.is_file():
+        layer_plan = yaml.safe_load(layer_template.read_text(encoding="utf-8"))
+        composer = layer_plan.get("composer", {}) if isinstance(layer_plan, dict) else {}
+        if composer.get("max_groups") != 4:
+            result.error("layer-composition-template.yaml must cap Composer at four groups")
+        if composer.get("appearances") != ["default", "dark", "mono"]:
+            result.error("layer-composition-template.yaml must author Default, Dark, and Mono")
+        if composer.get("mono_previews") != ["clear-light", "clear-dark", "tinted-light", "tinted-dark"]:
+            result.error("layer-composition-template.yaml must include all Clear and Tinted previews")
 
 
 def validate_agent_metadata(result: Result) -> None:
@@ -236,6 +253,7 @@ def validate_repo_hygiene(result: Result) -> None:
         ROOT / "NOTICE.md",
         ROOT / "CONTRIBUTING.md",
         ROOT / "CHANGELOG.md",
+        ROOT / "TODO.md",
         ROOT / "VERSION",
         ROOT / ".github" / "workflows" / "validate.yml",
         ROOT / ".github" / "workflows" / "source-freshness.yml",
@@ -243,6 +261,7 @@ def validate_repo_hygiene(result: Result) -> None:
         ROOT / "docs" / "release-notes-v1.1.0.md",
         ROOT / "docs" / "release-notes-v1.2.0.md",
         ROOT / "docs" / "release-notes-v1.3.0.md",
+        ROOT / "docs" / "release-notes-v2.0.0.md",
         ROOT / "scripts" / "check_sources.py",
         ROOT / "scripts" / "install.sh",
         ROOT / "scripts" / "package_skill.py",
@@ -276,6 +295,19 @@ def validate_repo_hygiene(result: Result) -> None:
     ):
         if stale_presentation in readme:
             result.error(f"README still presents stale material: {stale_presentation}")
+
+    checklist = (ROOT / "TODO.md").read_text(encoding="utf-8")
+    for requirement in (
+        "Per-icon creative gate",
+        "Per-icon Composer gate",
+        "Per-app delivery evidence",
+        "Individual/Combined",
+        "Validated",
+        "Prepared",
+        "Not tested",
+    ):
+        if requirement not in checklist:
+            result.error(f"TODO.md is missing checklist requirement: {requirement}")
 
     # Assemble these values so the validator does not flag its own source while
     # still rejecting leaked attachment and temporary paths elsewhere.

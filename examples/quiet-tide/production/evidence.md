@@ -2,6 +2,8 @@
 
 Validation date: 2026-07-24
 
+Build revalidation: 2026-07-26
+
 ## Environment
 
 - macOS host with Xcode 26.6 (build 17F113)
@@ -20,6 +22,8 @@ Validation date: 2026-07-24
 6. Generated the fixture project with XcodeGen.
 7. Compiled the `.icon` through `actool` in a successful Xcode simulator build with exit code 0.
 8. Installed and launched the fixture, returned to the Home Screen, and observed the compiled Quiet Tide icon.
+
+On 2026-07-26, the existing `.icon` was recompiled successfully with Xcode 26.6 (17F113) for the generic iOS Simulator destination. An initial sandboxed run could not access CoreSimulator services and caused `actool` to fail opening the icon; the scoped non-sandboxed rerun completed with exit code 0. No new Simulator screenshot or physical-device observation was made during this revalidation.
 
 ## Evidence files
 

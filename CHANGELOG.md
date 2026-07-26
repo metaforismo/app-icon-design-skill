@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.0.0 — 2026-07-26
+
+- Reframed the default shipping workflow around one or two complete Imagegen directions, stable version cards, targeted revisions, and explicit visual approval.
+- Added a current category-collision scan and a compact acceptance rubric for originality, 32 px recognition, appearance resilience, and production fidelity.
+- Made Icon Composer the planned final authoring route for compatible iOS, iPadOS, macOS, and watchOS icons while retaining an explicit flattened fallback for incompatible complex illustration.
+- Added a Composer-feasibility gate and mandatory re-approval for any adapted production concept.
+- Rebuilt the Icon Composer reference around the document/icon/group/layer model, four-group maximum, Individual versus Combined material, Default/Dark/Mono authoring, Clear/Tinted previews, platform overrides, and Xcode fallback behavior.
+- Added synthetic Home Screen, search, Settings, and notification-badge context boards to static QA.
+- Added a reusable concept-review template and applied the approval rule to repository branding itself.
+- Updated README examples, handoff templates, source dates, validators, and regression tests.
+
 ## 1.3.0 — 2026-07-24
 
 - Replaced case-study branding with a dedicated App Icon Studio folded-ribbon identity.

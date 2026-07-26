@@ -46,6 +46,7 @@
 
 - Audit report:
 - Preview sheet:
+- Context board:
 - Composer screenshots:
 - Build log:
 - Simulator screenshots:

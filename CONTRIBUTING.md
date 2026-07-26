@@ -16,6 +16,7 @@ Keep contributions evidence-led and source-aware.
 - Use original or properly licensed artwork.
 - Do not add third-party app icons, Apple templates, hardware replicas, or user-supplied references.
 - Include the final prompt and `provenance.yaml`.
+- Apply the named-version approval gate to repository branding and social images; do not publish a generated identity before explicit approval.
 - State whether the example is concept-only, static-preflighted, Icon Composer previewed, built, simulated, device-tested, or store-tested.
 - Never add a hand-made directory named `.icon`; only Icon Composer creates that file.
 
@@ -33,4 +34,3 @@ If Codex’s canonical `skill-creator` is installed, also run:
 python "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py" \
   skills/design-app-icons
 ```
-

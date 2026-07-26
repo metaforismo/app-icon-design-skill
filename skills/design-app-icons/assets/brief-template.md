@@ -12,7 +12,7 @@
 
 - Platforms:
 - Minimum releases:
-- Deliverable: concept / bitmap / layers / Icon Composer / Xcode integration
+- Deliverable: concept-only / bitmap-only / shipping Composer icon / tvOS or visionOS asset catalog
 - Approval state: exploring / explicitly approved / production blocked pending re-approval
 - Approved concept/version:
 - Approved artifact SHA-256:
@@ -24,6 +24,15 @@
 
 | Input | Role | Broad qualities to use | Elements not to copy |
 | --- | --- | --- | --- |
+
+## Category collision scan
+
+- Crowded metaphors:
+- Common silhouette:
+- Common palette:
+- Territory to avoid:
+- Underused opportunity:
+- Proposed recognition anchor:
 
 ## Concept directions
 
@@ -45,15 +54,6 @@
 - Small-size plan:
 - Layer plan:
 
-### Direction C
-
-- Idea in seven words:
-- Recognition anchor:
-- Product fit:
-- Collision risk:
-- Small-size plan:
-- Layer plan:
-
 ## Decision
 
 - Selected direction:
@@ -64,3 +64,4 @@
 - Approval date:
 - Locked invariants:
 - Production translations permitted:
+- Composer feasibility: unassessed / faithful / adapted concept required / flattened fallback requested

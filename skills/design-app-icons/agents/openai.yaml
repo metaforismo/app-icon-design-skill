@@ -1,7 +1,7 @@
 interface:
   display_name: "App Icon Studio"
-  short_description: "Design and validate distinctive Apple app icons"
+  short_description: "Design and ship distinctive Apple app icons"
   icon_small: "./assets/icon-small.png"
   icon_large: "./assets/icon-large.png"
   brand_color: "#5B5CE2"
-  default_prompt: "Use $design-app-icons to iterate on original iOS icon concepts, pause for my explicit approval, then finalize and audit the approved whole image; use layers or Icon Composer only if I request them and fidelity is preserved."
+  default_prompt: "Use $design-app-icons to create one or two original whole-icon directions, iterate on one named version until I explicitly approve it, then reconstruct it faithfully in Icon Composer and validate the compiled result."

@@ -14,7 +14,7 @@ DIST = ROOT / "dist"
 VERSION = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
 ARCHIVE = DIST / f"design-app-icons-v{VERSION}.zip"
 CHECKSUMS = DIST / "SHA256SUMS.txt"
-ZIP_TIMESTAMP = (2026, 7, 24, 0, 0, 0)
+ZIP_TIMESTAMP = (2026, 7, 26, 0, 0, 0)
 
 
 def iter_skill_files() -> list[Path]:

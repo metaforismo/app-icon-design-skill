@@ -1,6 +1,6 @@
 # Sources and claim boundaries
 
-Last checked: 2026-07-24. The repository release ledger is maintained at `docs/source-manifest.yaml`; the installed skill retains the primary URLs below. The scheduled workflow checks availability but cannot prove that page content or platform behavior is unchanged.
+Last checked: 2026-07-26. The repository release ledger is maintained at `docs/source-manifest.yaml`; the installed skill retains the primary URLs below. The scheduled workflow checks availability but cannot prove that page content or platform behavior is unchanged.
 
 ## Primary Apple sources
 

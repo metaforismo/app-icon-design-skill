@@ -1,123 +1,195 @@
-# Liquid Glass and Icon Composer workflow
+# Icon Composer production workflow
 
-Current-source snapshot: 2026-07-23.
+Current-source snapshot: 2026-07-26. This reference follows Apple’s June 2026 HIG refinement, current Icon Composer documentation, and the behavior observed in Icon Composer 1.6 bundled with Xcode 26.6 on macOS 26.5.2. Recheck official documentation when the tool version changes.
 
 ## Contents
 
-- [What Icon Composer is](#what-icon-composer-is)
-- [Prepare source artwork](#prepare-source-artwork)
-- [Create and organize the icon](#create-and-organize-the-icon)
-- [Apply material intentionally](#apply-material-intentionally)
-- [Understand appearances](#understand-appearances)
-- [Add the icon to Xcode](#add-the-icon-to-xcode)
-- [Test and retain evidence](#test-and-retain-evidence)
-- [Migration traps](#migration-traps)
+- [What the file represents](#what-the-file-represents)
+- [Source-art contract](#source-art-contract)
+- [The Composer object model](#the-composer-object-model)
+- [Material controls](#material-controls)
+- [Appearances and platform overrides](#appearances-and-platform-overrides)
+- [Practical authoring sequence](#practical-authoring-sequence)
+- [Xcode delivery and fallback behavior](#xcode-delivery-and-fallback-behavior)
+- [Validation matrix](#validation-matrix)
+- [Failure modes](#failure-modes)
 
-## What Icon Composer is
+## What the file represents
 
-Icon Composer creates a single multilayer `.icon` file for iPhone, iPad, Mac, Apple Watch, and App Store rendering. It can preview platforms, appearances, backgrounds, lighting, and scale, and can export a flattened image for marketing.
+Icon Composer creates one Apple-authored multilayer `.icon` document for iPhone, iPad, Mac, Apple Watch, and the App Store. The system renders sizes, supported platforms, appearances, and dynamic Liquid Glass behavior from this document. Icon Composer can also export flattened artwork for marketing.
 
-Apple’s 2026 refinement adds sharper material rendering, selectable refraction, updated specular highlights, shadows, and earlier-release previews. Treat these controls as current tooling, not as bitmap filters to imitate before import.
+Use Icon Composer for a shipping icon on these supported platforms when the approved design can be represented faithfully. Use Xcode asset catalogs for tvOS and visionOS. For complex illustrative art that cannot survive separation, Apple still permits flattened image delivery; report that route honestly instead of forcing an inferior Composer translation.
 
-Icon Composer is an optional delivery tool, not the default destination for every approved image. Choose it only when the user requests current multilayer Apple delivery and the design can be separated without losing its approved visual. Prefer a flattened asset workflow when exact integrated pixels matter more than dynamic material.
+Treat `.icon` as a tool-owned format. Create and save it with Icon Composer. Do not manufacture `icon.json`, copy a sample package, or rename a directory and call it valid.
 
-## Prepare source artwork
+## Source-art contract
 
-For a new icon or redesign, require `Approved — production authorized`, an explicit request for Composer delivery, and a completed `design-approval.yaml` before preparing sources. A Liquid Glass migration of already-approved owned artwork may treat that supplied artwork as the approved concept when the user explicitly requests production.
+Before opening Composer, require a named approved image and a reconstructed proof that matches it at 1024 px and 32 px.
 
-1. Start from the latest Apple Design Resources app-icon template.
-2. Use 1024 × 1024 for iPhone, iPad, and Mac; use 1088 × 1088 for Apple Watch.
-3. Draw back-to-front layers in a vector editor.
-4. Separate only the graphics that need independent color, material, appearance, platform, or depth behavior. Keep shared lighting, bloom, reflections, and painterly continuity flattened when separation would break them.
-5. Convert essential text to outlines because SVG does not preserve fonts.
-6. Name exports numerically, such as `01-wave.svg`, `02-sun.svg`, and `03-accent.svg`.
-7. Remove effects that Icon Composer should own: blur, shadow, specular, opacity, translucency, background color, and background gradient.
-8. Prefer SVG. Use PNG for unsupported SVG features.
-9. Export full unmasked layers; never export the final platform mask.
+Prepare artwork in a vector or raster editor:
 
-Do not force a complex illustration into many depth slices. Apple documents a maximum of four groups. Fewer groups are usually clearer.
+- 1024 × 1024 canvas for iPhone, iPad, and Mac;
+- 1088 × 1088 canvas for Apple Watch;
+- current Apple production grid from Apple Design Resources;
+- square, unmasked, full-canvas exports;
+- SVG whenever the geometry can be expressed faithfully;
+- PNG for raster texture, mesh gradients, or unsupported SVG features;
+- converted text outlines where essential;
+- numbered, meaningful filenames from back to front.
 
-## Create and organize the icon
+Keep the source deliberately plain. Remove:
 
-Open the latest Xcode and choose **Xcode > Open Developer Tool > Icon Composer**, or use Apple’s standalone download.
+- rounded-rectangle or circular canvas masks;
+- background colors and simple gradients that Composer can own;
+- baked drop shadows between depth groups;
+- bevels, edge specular, refraction, blur, and platform-material translucency;
+- accidental presentation backgrounds and outer tile shadows.
 
-Before opening Composer, recompose the exported SVG/PNG sources and compare the result with the approved concept. If metaphor, silhouette, composition, focal scale, palette, or lighting continuity drifted materially, stop the layer route. Prefer the approved flattened image; return to concept review only when the user wants a changed design.
+Retain intrinsic artwork such as intentional grain, painted shading, or a raster texture only when removing it would change the approved identity.
 
-1. Create and save a file with the intended Xcode app-icon name, commonly `AppIcon.icon`.
-2. In the Document inspector, enable only the supported platforms to reduce accidental variations.
-3. Drag SVG/PNG files or folders into the sidebar.
-4. Organize layers into at most four groups. Sidebar order is back-to-front.
-5. Keep layer and group names explicit.
-6. Use the canvas grid and numeric x/y/scale controls for precise placement.
-7. Use platform-specific composition overrides only when a unified layout fails a real crop or optical-centering check.
+## The Composer object model
 
-Keep source design files outside the `.icon` file too. The Icon Composer document is delivery metadata and material annotation, not a replacement for the editable vector source.
+Understand the hierarchy before tuning:
 
-## Apply material intentionally
+| Level | Purpose | Typical controls |
+| --- | --- | --- |
+| Document | Supported platform scope | iOS only/shared iOS–macOS choice, watchOS on/off |
+| Icon canvas | System-owned background | solid or gradient fill |
+| Group | One rendered z-depth plane | order, Individual/Combined material mode, specular, refraction, blur, translucency, shadow |
+| Layer | One imported graphic inside a group | image, fill, opacity, blend, visibility, position, scale, Effects on/off |
 
-Use the Appearance inspector:
+Use a maximum of four groups. Groups—not every imported graphic—become the rendered depth planes. A group can contain multiple layers so related color pieces can share z-depth while retaining separate appearance fills.
 
-- **Color:** automatic, none, solid, gradient, and opacity
-- **Liquid Glass:** blur/frostiness, translucency, specular highlights, refraction, shadows, and related current controls
-- **Composition:** visibility, position, scale, platform variations
+Choose group mode intentionally:
 
-Material rules:
+- **Individual:** each layer receives its own material boundary and highlight. Use for distinct shapes that should read as separate pieces of glass.
+- **Combined:** the group is treated as one composite object. Use when adjacent or overlapping layers form one silhouette and internal seams must not become separate glass edges.
 
-- Keep the recognition anchor opaque enough to survive clear and tinted contexts.
-- Use translucency where seeing through the layer explains depth; do not use it merely because it is fashionable.
-- Apply refraction selectively. Strong lens distortion can destroy a small silhouette.
-- Prefer crisp inner or outer specular highlights that define geometry without doubling every edge.
-- Use the lighting control to expose weak contrast, not to choose one flattering angle.
-- Preview on bright, dark, saturated, and image wallpapers.
-- Avoid busy textures under refractive glass.
-- Do not reproduce glass by baking highlights and shadows into the source art unless a specific non-Icon-Composer fallback requires it.
+Start with fewer groups. Add depth only when it improves recognition, occlusion, or material response. Do not allocate a group to every highlight or decorative detail.
 
-## Understand appearances
+## Material controls
 
-Icon Composer’s main authoring choices are **Default**, **Dark**, and **Mono** for iOS/macOS. Mono options preview:
+Composer automatically applies Liquid Glass when graphics are imported. Tune the effect at the group level and disable it on layers that must remain flat or opaque.
 
-- light or dark
-- clear or tinted
-- a chosen tint color
+### Specular
 
-Apple’s HIG describes the resulting supported iOS/iPadOS/macOS appearances as Default, dark, clear light, clear dark, tinted light, and tinted dark.
+Specular creates the dynamic edge highlight and slight background response that define the glass boundary. Keep it enabled by default. Current controls can determine whether highlights align inside, outside, or automatically according to layer color. Inspect several lighting angles; a good still frame can hide a broken edge response.
 
-Keep the identity anchor consistent. Vary fill, opacity, material, or backdrop to protect legibility. Avoid redesigning the silhouette in each appearance because that weakens recognition.
+Disable or reduce specular when:
 
-Apple Watch has no appearance variants in Icon Composer. Test its circular mask and 1088 × 1088 layout separately.
+- a flat opaque brand element must not look hollow;
+- nested edges produce noisy double highlights;
+- a thin form loses contrast;
+- the approved design depends on a quiet matte surface.
 
-## Add the icon to Xcode
+### Refraction
 
-1. Drag the `.icon` file into the Project navigator.
-2. Select the target’s General pane.
-3. Under **App Icons and Launch Screen**, set the App Icon field to the `.icon` filename without the extension.
-4. Build for a simulator and device.
-5. Inspect the compiled app rather than assuming the Project navigator preview proves delivery.
+Refraction bends color and shape from content behind the group. Use low strength for subtle edge presence and higher strength only for a deliberate lens-like focal element. Excess refraction can deform the recognition anchor, merge nearby shapes, or make Clear/Tinted variants illegible.
 
-The latest Xcode uses the matching Icon Composer file instead of an existing `AppIcon` asset catalog. If the app supports earlier releases, Xcode can generate flattened icons at build time. If the exact historical icon must remain, continue using asset catalogs rather than accepting an automatically similar fallback.
+Test refraction over multiple backgrounds; a setting that looks good over one color may become muddy or distracting over a detailed wallpaper.
 
-## Test and retain evidence
+### Blur and translucency
 
-Capture:
+Blur softens what transmits through the material; translucency controls how much underlying color and form remain perceptible. Use them together, not as independent decoration. Preserve at least one opaque or high-contrast recognition anchor so the icon survives Clear and Tinted modes.
 
-- Icon Composer screenshots for each platform and appearance
-- at least one challenging bright and one challenging dark wallpaper
-- small-size previews
-- Xcode target setting
-- successful build output
-- Simulator Home Screen or Dock placement
-- a physical device when release risk justifies it
-- older-release preview or device evidence when minimum deployments matter
+### Shadow
 
-Separate static, Simulator, and device evidence. A static exported PNG cannot prove dynamic specular, refraction, masking, or gyro behavior.
+Shadow separates rendered groups in z-depth. Use enough to clarify order at small sizes, not enough to recreate a static floating-object illustration. Check dark appearance, where neutral shadows can disappear or become too heavy.
 
-## Migration traps
+### Color and opacity
 
-- Naming a file `AppIcon.icns` or `AppIcon.iconset` instead of using Icon Composer’s `.icon` file
-- Keeping baked shadows, blur, highlights, gradients, and mask corners in imported source art
+Use icon, group, or layer fills to create controlled Default, Dark, and Mono variants. Composer supports automatic source color, none, solid, and gradient fills. Vary appearance color before changing geometry. Avoid making every variant a different identity.
+
+## Appearances and platform overrides
+
+Composer authors three modes:
+
+- **Default**
+- **Dark**
+- **Mono**
+
+From Mono options, preview:
+
+- Clear light
+- Clear dark
+- Tinted light
+- Tinted dark
+
+These previews are not four additional independent icon structures. Keep the same recognition anchor and core elements in every mode. For Mono, establish a clear luminance hierarchy: at least one light anchor, distinct gray roles, and sufficient separation after tint infusion.
+
+Use the inspector’s `All` view to audit every overridden value. Add appearance variation under Color or Liquid Glass only when needed. Add platform variation under Composition for optical scale or position—not to introduce a different symbol.
+
+For watchOS, inspect the circular crop and 1088 grid. There are no watchOS appearance modes in Composer. A shared vector design can use a platform-specific scale or position, but essential raster sources may need separately reviewed exports.
+
+## Practical authoring sequence
+
+1. Launch **Xcode → Open Developer Tool → Icon Composer**.
+2. Create and save a named `.icon` document before importing.
+3. In the Document inspector, hide unsupported platforms.
+4. Set the canvas background to a solid or soft gradient when possible.
+5. Import numbered SVG/PNG files or folders. Verify alphabetical order and actual z-order.
+6. Organize graphics into no more than four semantic depth groups.
+7. Decide Individual versus Combined for every multi-layer group.
+8. Check the unmodified Default result before tuning; this establishes the automatic-material baseline.
+9. Tune specular, refraction, blur, translucency, and shadow one variable at a time.
+10. Disable Effects on opaque or flat layers that should not receive glass.
+11. Author Dark with color changes before geometry changes.
+12. Author Mono, then inspect Clear and Tinted light/dark over flat and photographic backgrounds.
+13. Rotate the lighting angle, toggle the official grid, and inspect several preview sizes.
+14. Check iOS/macOS and watchOS layouts separately; record every override.
+15. Export a flattened Default image for comparison and marketing if required.
+16. Compare the export with the approved concept at 1024 px and 32 px. Return for approval if a protected invariant changed.
+17. Save with Icon Composer and retain screenshots of the tested modes.
+
+Do not tune all effects simultaneously. If a result feels wrong, identify whether the failure comes from source geometry, grouping, color, material, or composition and change only that layer of the system.
+
+## Xcode delivery and fallback behavior
+
+Add the `.icon` file to the Xcode target. In the target’s General pane, ensure **App Icons and Launch Screen → App Icon** matches the filename without `.icon`. Multiple Composer files can exist, but only the matching name is selected.
+
+Current Xcode uses the matching Icon Composer file instead of the existing `AppIcon` asset catalog. When the target supports older releases without the same Liquid Glass appearances, Xcode generates fallback icon images from the Composer file at build time.
+
+Consequences:
+
+- preserve the old asset catalog until the Composer build and runtime result are accepted;
+- test the oldest supported release when fallback appearance matters;
+- keep the asset-catalog route if the exact historical icon must remain unchanged;
+- inspect build warnings rather than assuming fallback generation succeeded;
+- verify alternate-icon configuration separately.
+
+## Validation matrix
+
+Record direct evidence for every claimed cell:
+
+| Surface | Required observation |
+| --- | --- |
+| Composer Default | source order, material edges, approved-design fidelity |
+| Composer Dark | contrast, color overrides, shadow behavior |
+| Composer Mono | luminance hierarchy and identity anchor |
+| Clear light/dark | wallpaper transmission and boundary legibility |
+| Tinted light/dark | tint resilience and focal hierarchy |
+| Lighting angles | moving specular/refraction does not distort identity |
+| Small Composer sizes | silhouette and group separation survive |
+| watchOS | circular crop and optical position |
+| Xcode | selected `.icon`, successful build, no relevant asset warnings |
+| Simulator | Home Screen plus requested system surfaces |
+| Earlier release | generated fallback, when supported and relevant |
+| Physical device | named model and OS; dynamic response where observable |
+
+Composer screenshots validate only the tool preview. Simulator validates only that runtime and context. Neither proves a physical display, App Review, or conversion.
+
+## Failure modes
+
+- Starting layer production before a named whole-icon version is approved
+- Generating every layer independently and losing shared geometry or lighting
 - Using more than four depth groups
-- Treating every transparent shape as glass
-- Assuming a flat concept image can be imported and remain independently editable
-- Forgetting that tvOS and visionOS remain asset-catalog workflows
-- Replacing the existing asset catalog before comparing earlier-release output
-- Calling the result “Liquid Glass validated” without an Icon Composer or runtime preview
+- Confusing imported graphic layers with rendered depth groups
+- Applying Individual mode where adjacent pieces must form one silhouette
+- Baking mask, bevel, shadow, blur, refraction, or specular into source art
+- Making every transparent shape glass
+- Using thin, feathered edges that produce weak system highlights
+- Treating Default, Dark, Mono, Clear, and Tinted as unrelated identities
+- Ignoring the watchOS circular crop
+- Editing a `.icon` package by hand and claiming tool validation
+- Replacing the asset catalog before testing older-release output
+- Calling a static heuristic preview an Icon Composer render

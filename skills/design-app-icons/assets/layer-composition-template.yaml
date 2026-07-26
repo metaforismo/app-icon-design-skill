@@ -26,6 +26,22 @@ platforms:
   watchos:
     canvas: [1088, 1088]
     mask: system circle
+composer:
+  max_groups: 4
+  background: composer-fill
+  groups:
+    - order: 1
+      id: primary-depth-plane
+      mode: combined
+      source_layers: [02-primary]
+      material:
+        specular: review-in-composer
+        refraction: review-in-composer
+        blur: review-in-composer
+        translucency: review-in-composer
+        shadow: review-in-composer
+  appearances: [default, dark, mono]
+  mono_previews: [clear-light, clear-dark, tinted-light, tinted-dark]
 layers:
   - order: 1
     id: 01-backdrop
@@ -55,6 +71,8 @@ acceptance:
     - single-pixel halo
     - geometry outside target box
     - mismatched lighting or occlusion
+    - more than four Composer depth groups
+    - unapproved platform or appearance geometry change
 status:
   validated: []
   prepared: []

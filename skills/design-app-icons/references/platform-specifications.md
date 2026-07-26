@@ -1,6 +1,6 @@
 # Apple app-icon platform specifications
 
-Current-source snapshot: 2026-07-23. Re-check Apple’s HIG and Xcode documentation before release work because platform tooling changes.
+Current-source snapshot: 2026-07-26. Re-check Apple’s HIG and Xcode documentation before release work because platform tooling changes.
 
 ## Contents
 
@@ -50,13 +50,13 @@ Do not generalize one path’s alpha rules to every source layer and platform.
 
 ## Icon Composer versus asset catalogs
 
-Use Icon Composer for a single multilayer source across iOS, iPadOS, macOS, watchOS, and the App Store. Use the `.icon` file that Icon Composer creates; do not call it `.iconset`, `.icns`, or an asset-catalog folder.
+Use Icon Composer as the production authoring route for a compatible shipping icon across iOS, iPadOS, macOS, watchOS, and the App Store. Use the `.icon` file that Icon Composer creates; do not call it `.iconset`, `.icns`, or an asset-catalog folder.
 
 Use asset catalogs when:
 
 - the target is tvOS or visionOS
 - exact legacy artwork must remain on older releases
-- the project has not adopted Icon Composer
+- a complex illustrative design cannot survive Composer translation and the user selects a flattened fallback
 - the platform workflow explicitly requires an image stack or icon set
 
 Adding an Icon Composer file to a target can replace the existing icon asset catalog for that app icon. Inspect target settings before editing.
@@ -76,4 +76,3 @@ Do not manually invent `Contents.json` entries from memory for a live project. L
 - Do not claim that tvOS or visionOS use Icon Composer when Apple’s current docs keep them on asset catalogs.
 - Do not claim all six iOS/macOS appearances are separate top-level authoring modes. Icon Composer exposes Default, Dark, and Mono; Clear and Tinted previews are options within Mono.
 - Do not claim a fixed central 70% safe zone as Apple guidance unless the current official template explicitly provides it.
-

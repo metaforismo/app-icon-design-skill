@@ -1,6 +1,6 @@
 # Research notes
 
-Last checked: 2026-07-23.
+Last checked: 2026-07-26.
 
 ## Current Apple baseline
 
@@ -14,6 +14,13 @@ The repository follows Apple’s June 2026 HIG update and current Icon Composer 
 - Current Icon Composer guidance limits a document to four depth groups.
 - Icon Composer exposes Default, Dark, and Mono authoring modes; Clear and Tinted light/dark are Mono previews.
 - 2026 tooling includes refined material rendering, refraction, specular controls, and earlier-release previews.
+- The object model distinguishes imported graphic layers from at most four rendered depth groups. Groups can render their layers individually or as one combined glass object.
+- The icon canvas owns simple background fills; group controls own shared material; layer controls own image, color, composition, and whether Effects are enabled.
+- Current Xcode selects the `.icon` whose filename matches the target’s App Icon setting and generates earlier-release images when applicable.
+
+## Local tool observation
+
+The v2 workflow was checked against macOS 26.5.2, Xcode 26.6 (17F113), and bundled Icon Composer 1.6 (99.1). The existing Quiet Tide `.icon` fixture was rebuilt successfully for a generic iOS Simulator destination on 2026-07-26. Its earlier Composer captures and Simulator Home Screen evidence remain the directly observed runtime example. This does not validate new artwork, physical-device material response, or every Xcode fallback.
 
 ## Corrections to secondary material
 
@@ -45,19 +52,17 @@ The repository retains only this generalized taxonomy. It does not copy, trace, 
 
 ## Evidence boundary
 
-The four bundled examples prove:
+The bundled examples prove:
 
 - the built-in image-generation workflow can produce original, coherent, square concept masters
-- prompts can constrain the output to one metaphor, strong small-size hierarchy, and a plausible layer plan
+- prompts can constrain output to one metaphor, strong small-size hierarchy, and a plausible layer plan
 - the static validator can inspect 1024 × 1024 files and create preview sheets
+- the Quiet Tide example can be reconstructed into deliberate SVG sources, saved in Icon Composer, compiled by Xcode, and observed in one Simulator context
 
 They do not prove:
 
-- an editable vector reconstruction
-- Icon Composer import or material behavior
-- a valid `.icon` file
-- Xcode build integration
-- Simulator or real-device rendering
+- automatic editable reconstruction for every generated visual
+- Composer compatibility for every generated visual
+- physical-device rendering or gyro response
 - App Store acceptance
 - conversion or ranking lift
-

@@ -53,29 +53,29 @@ The prompt should describe the artwork, not a glossy presentation of an app-icon
 
 Keep exploration cheap and reversible:
 
-1. Generate flattened whole-icon directions first. Do not generate production layers while the design is unapproved.
+1. Generate one complete flattened icon per call. Use one direction for a precise brief and at most two genuinely different directions when the identity is unresolved. Do not automatically generate three options.
 2. Save each retained candidate with a stable version such as `concept-a1.png`, `concept-a2.png`, or `concept-b1.png`.
-3. Show the selected candidate at 1024 px and 32 px. Ask the user to identify what to preserve and the single most important change.
+3. Show each retained candidate at full size and 32 px using `assets/concept-review-template.md`. Ask for one targeted change or explicit approval of the named version.
 4. For a revision, prefer built-in Imagegen edit semantics when an existing candidate must remain recognizable. Repeat invariants such as “change only the wave height; preserve silhouette, sun, palette, lighting, and composition.” Generate a new version instead of overwriting the prior candidate.
 5. If an edit drifts, return to the last accepted candidate rather than stacking corrections onto the drifted output.
 6. Mark every candidate `Exploring — not approved` until the user explicitly names the approved version.
 
-Do not interpret “better,” “almost,” or a lack of criticism as approval. Once the user says a clear equivalent of “approve,” “lock,” “this is the one,” or “proceed with this version,” preserve that version and continue with the shortest requested delivery. For an image-only result, the explicit approval in conversation is enough. Create `assets/design-approval-template.yaml` only for a project-bound editable, Icon Composer, or Xcode handoff.
+Do not interpret “better,” “almost,” or a lack of criticism as approval. Once the user says a clear equivalent of “approve,” “lock,” “this is the one,” or “proceed with this version,” preserve that version. For a concept-only image, approval in conversation is enough. For a shipping iOS, iPadOS, macOS, or watchOS icon, create the production approval record and continue through the Composer-feasibility gate.
 
-If the user asks for the entire workflow upfront, complete the concept comparison and pause at the approval gate. After approval, finalize the whole image first. Continue into layers, Composer, or Xcode only when the original request explicitly included that delivery. Ask again when production would visibly change a locked invariant or an external action requires separate authorization.
+If the user asks for a shipping workflow upfront, complete the concept comparison and pause at the approval gate. After approval, reconstruct and enter Composer without another routine confirmation when the translation preserves every invariant. Return for re-approval when production needs a visible change. Never publish the skill’s own generated identity or repository branding before the same explicit gate.
 
-## Choose the shortest delivery
+## Choose the production route
 
-Use this order after approval:
+Choose after approval:
 
-1. **Finished image — default:** retain the integrated rendering, make only approved cleanup edits, export an opaque 1024 × 1024 PNG, run static QA, and stop.
-2. **Flattened platform asset:** preserve the whole image when Xcode integration is requested and exact appearance matters.
-3. **Minimal SVG reconstruction:** use for simple geometry, repeatable brand curves, or editable color systems.
-4. **Minimal Icon Composer sources:** use only when explicitly requested and the design benefits from independent platform material or depth.
+1. **Concept or bitmap request:** retain the integrated rendering, export the approved image, run static/context QA, and stop.
+2. **Shipping iOS/iPadOS/macOS/watchOS icon:** reconstruct the fewest deliberate SVG/PNG sources that preserve approval, then author and validate the `.icon` in Icon Composer.
+3. **Composer-adapted concept:** if faithful translation is impossible, simplify it as a new named version and return for approval before Composer.
+4. **Flattened fallback:** use only when exact pixels matter more than Composer adaptation or when Apple’s flattened route fits complex illustration. Report that Composer was not used.
 
-Do not decompose a successful image merely because separate layers sound more professional. A flattened image is often the most faithful production source for integrated 3D lighting, soft bloom, translucent shells, painterly material, fur, glass, or shared reflections.
+Design concepts for eventual Composer translation when shipping is the goal, but do not decompose blindly. Integrated 3D lighting, soft bloom, translucent shells, painterly material, fur, glass, or shared reflections may require an approved Composer-adapted concept or a flattened fallback.
 
-Before choosing layers, ask one question: `Can these roles be separated and recomposed without changing the approved visual?` If the answer is uncertain, use the finished image. If a proof changes the silhouette, proportions, focal scale, lighting continuity, seam softness, face placement, or palette, reject the decomposition and return to the approved image.
+Before choosing layers, ask: `Can these roles be separated and recomposed without changing the approved visual?` If uncertain, create a reconstruction proof. If it changes silhouette, proportions, focal scale, lighting continuity, seam softness, face placement, or palette, reject it and return for a decision between an adapted version and flattened fallback.
 
 A technically valid alpha set can still be the wrong production route. Reject a separated proof when an integrated glow turns into a detached disk, soft seams harden, proportions drift, or shared lighting breaks.
 
@@ -95,7 +95,7 @@ Avoid: micro-details, thin lines, generic stock mark, excessive bloom, copied co
 
 ## Layer-first generation
 
-Use this rare route only after explicit approval, only when the user requested independent raster roles, and only when the chosen roles can be separated without losing shared light or material continuity. It is not automatically better than a finished image or vector reconstruction.
+Use this rare route only after explicit approval and only when independent raster roles can preserve shared light and material continuity. Prefer deliberate vector reconstruction for geometry; image-generated layers are candidates, not production proof.
 
 ### 1. Freeze a composition contract
 
@@ -218,7 +218,7 @@ An image-generated concept may contain:
 
 Reconstruct the chosen direction. Do not auto-trace and ship without cleanup. The generated bitmap is not proof of Icon Composer compatibility, correct masking, Xcode delivery, or App Store acceptance.
 
-For the default finished-image or flattened platform deliverable, still remove artifacts, resize with a high-quality filter, verify opacity, embed a supported color profile when needed, and test the actual Xcode result when integration was requested. This is a complete route, not an inferior fallback.
+For a concept-only or flattened fallback deliverable, still remove artifacts, resize with a high-quality filter, verify opacity, embed a supported color profile when needed, and test the actual Xcode result when integration was requested. A flattened fallback is valid, but it is not an Icon Composer result.
 
 ## Provenance record
 

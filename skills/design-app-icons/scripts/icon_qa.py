@@ -48,6 +48,13 @@ APPEARANCES = ("light", "dark", "mono", "tinted")
 SUPPORTED_FORMATS = {"PNG", "JPEG"}
 
 
+def ui_font(size: int) -> ImageFont.ImageFont:
+    try:
+        return ImageFont.truetype("DejaVuSans.ttf", size=size)
+    except OSError:
+        return ImageFont.load_default()
+
+
 @dataclass
 class Finding:
     severity: str
@@ -287,7 +294,93 @@ def make_previews(
     sheet_path = destination / f"{stem}-{platform}-appearance-sheet.png"
     sheet.save(sheet_path, "PNG", optimize=True)
     outputs.append(str(sheet_path))
+
+    context_path = destination / f"{stem}-{platform}-context-board.png"
+    make_context_board(image, platform).save(context_path, "PNG", optimize=True)
+    outputs.append(str(context_path))
     return outputs
+
+
+def masked_icon(image: Image.Image, size: int, platform: str, appearance: str) -> Image.Image:
+    dimensions = preview_dimensions(size, platform)
+    art = appearance_art(fit_without_distortion(image, dimensions), appearance)
+    alpha = ImageChops.multiply(art.getchannel("A"), platform_mask(dimensions, platform))
+    art.putalpha(alpha)
+    return art
+
+
+def generic_neighbor(size: int, color: str, shape: str) -> Image.Image:
+    tile = Image.new("RGBA", (size, size), color)
+    mask = platform_mask((size, size), "ios")
+    tile.putalpha(mask)
+    draw = ImageDraw.Draw(tile)
+    inset = round(size * 0.28)
+    box = (inset, inset, size - inset, size - inset)
+    if shape == "circle":
+        draw.ellipse(box, fill="#ffffffcc")
+    elif shape == "diamond":
+        middle = size // 2
+        draw.polygon(((middle, inset), (size - inset, middle), (middle, size - inset), (inset, middle)), fill="#ffffffcc")
+    else:
+        draw.rounded_rectangle(box, radius=max(2, size // 12), fill="#ffffffcc")
+    return tile
+
+
+def paste_with_shadow(canvas: Image.Image, icon: Image.Image, position: tuple[int, int]) -> None:
+    x, y = position
+    shadow = Image.new("RGBA", icon.size, (0, 0, 0, 0))
+    shadow.putalpha(icon.getchannel("A").point(lambda value: round(value * 0.22)))
+    canvas.alpha_composite(shadow, (x, y + max(2, icon.height // 18)))
+    canvas.alpha_composite(icon, position)
+
+
+def make_context_board(image: Image.Image, platform: str = "ios") -> Image.Image:
+    """Create a synthetic salience board; this is not a system-rendering simulation."""
+    canvas = Image.new("RGBA", (1200, 760), "#eef1f6")
+    draw = ImageDraw.Draw(canvas)
+    title_font = ui_font(18)
+    label_font = ui_font(15)
+    body_font = ui_font(16)
+    caption_font = ui_font(13)
+    draw.text((28, 18), "Synthetic context board — heuristic, not an Apple render", fill="#111827", font=title_font)
+
+    panels = (
+        (24, 56, 576, 406, "Light wallpaper", "#dcecff", "light"),
+        (600, 56, 1176, 406, "Dark wallpaper", "#171b2b", "dark"),
+    )
+    colors = ("#ef665b", "#3d7cff", "#1eb980", "#8b5cf6", "#f2a93b", "#475569", "#dc4f91")
+    shapes = ("circle", "diamond", "square")
+    for left, top, right, bottom, label, background, appearance in panels:
+        draw.rounded_rectangle((left, top, right, bottom), radius=28, fill=background)
+        label_color = "#111827" if appearance == "light" else "#f8fafc"
+        draw.text((left + 22, top + 18), label, fill=label_color, font=label_font)
+        icon_size = 88
+        gap_x, gap_y = 124, 132
+        target_index = 2
+        for index in range(8):
+            row, column = divmod(index, 4)
+            x = left + 50 + column * gap_x
+            y = top + 66 + row * gap_y
+            if index == target_index:
+                icon = masked_icon(image, icon_size, platform, appearance)
+                paste_with_shadow(canvas, icon, (x, y))
+                badge_radius = 15
+                badge_x, badge_y = x + icon.width - 5, y + 5
+                draw.ellipse((badge_x - badge_radius, badge_y - badge_radius, badge_x + badge_radius, badge_y + badge_radius), fill="#ff3b30", outline="#ffffff", width=3)
+            else:
+                icon = generic_neighbor(icon_size, colors[index % len(colors)], shapes[index % len(shapes)])
+                paste_with_shadow(canvas, icon, (x, y))
+
+    draw.rounded_rectangle((24, 430, 1176, 736), radius=28, fill="#ffffff")
+    draw.text((48, 450), "Search and Settings scale", fill="#111827", font=label_font)
+    rows = ((500, 64, "Search result — 64 px"), (620, 40, "Settings row — 40 px"))
+    for y, size, label in rows:
+        draw.rounded_rectangle((48, y - 18, 1152, y + max(86, size + 28)), radius=18, fill="#f5f7fa")
+        icon = masked_icon(image, size, platform, "light")
+        paste_with_shadow(canvas, icon, (76, y))
+        draw.text((76 + max(icon.width, size) + 28, y + 5), label, fill="#111827", font=body_font)
+        draw.text((76 + max(icon.width, size) + 28, y + 34), "Does the recognition anchor survive without texture or micro-detail?", fill="#52606d", font=caption_font)
+    return canvas.convert("RGB")
 
 
 def audit_image(

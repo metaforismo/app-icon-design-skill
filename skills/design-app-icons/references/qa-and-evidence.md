@@ -5,6 +5,7 @@
 - [Evidence levels](#evidence-levels)
 - [Static preflight](#static-preflight)
 - [Small-size review](#small-size-review)
+- [Context board review](#context-board-review)
 - [Mask and appearance review](#mask-and-appearance-review)
 - [Xcode and runtime review](#xcode-and-runtime-review)
 - [Accessibility and inclusion](#accessibility-and-inclusion)
@@ -15,10 +16,10 @@
 Use explicit labels:
 
 1. **Concept inspected:** generated or drawn image reviewed at full size.
-2. **Design approved:** the user explicitly approved a named image. This can authorize image finalization without authorizing layers or app changes.
+2. **Design approved:** the user explicitly approved a named image and the protected invariants are recorded.
 3. **Final image preflight passed:** approved whole image checked at 1024 px and small sizes.
 4. **Production fidelity checked:** when sources exist, recomposed SVG/PNG sources compared with the approved concept at full size and 32 px.
-5. **Icon Composer previewed:** platforms, appearances, material, and masks observed.
+5. **Icon Composer previewed:** platforms, Default/Dark/Mono, Clear/Tinted previews, backgrounds, lighting angles, sizes, material, and masks observed.
 6. **Xcode build validated:** target setting and successful build observed.
 7. **Simulator validated:** icon observed in system context.
 8. **Device validated:** icon observed on named hardware and OS.
@@ -96,6 +97,18 @@ Do not judge only on a zoomed 1024-pixel canvas.
 
 For tvOS, preserve the 5:3 artwork aspect ratio. Treat `--sizes` as preview widths; do not force the 800 × 480 source into a square thumbnail. The QA script also renders a light/dark/mono/tinted comparison sheet. Those appearance transformations are static stress tests, not Icon Composer output.
 
+## Context board review
+
+When `--preview-dir` is supplied, `icon_qa.py` also creates a synthetic context board. It uses generic neighboring tiles—not third-party icons—to expose scale and salience issues. Review:
+
+- light and dark wallpaper grids;
+- the target beside visually competing colors;
+- search and Settings-style rows;
+- notification-badge occlusion;
+- recognition at 60 px and below.
+
+The board is a layout heuristic. It does not reproduce iOS, use Apple’s exact mask, or prove Simulator behavior. For shipping work, observe the compiled `.icon` on the actual Home Screen, search, Settings, App Library, notifications, and Dock where applicable.
+
 ## Mask and appearance review
 
 Use the current Apple production grid and Icon Composer:
@@ -105,7 +118,7 @@ Use the current Apple production grid and Icon Composer:
 - circle for visionOS asset-catalog work
 - tvOS safe zone and parallax crop
 
-For iOS/macOS, test Default, Dark, and Mono authoring states plus clear/tinted light/dark previews. Use multiple wallpaper types and move the lighting control.
+For iOS/macOS, test Default, Dark, and Mono authoring states plus Clear/Tinted light/dark previews. Use flat and photographic wallpapers, rotate the lighting control, and inspect multiple Composer sizes.
 
 Log any platform override. If a platform requires a different scale or position, preserve the same recognition anchor.
 

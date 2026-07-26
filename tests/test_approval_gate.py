@@ -13,20 +13,29 @@ SKILL = ROOT / "skills" / "design-app-icons"
 class ApprovalGateTests(unittest.TestCase):
     def test_skill_forbids_production_before_explicit_approval(self) -> None:
         text = (SKILL / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("do not create SVG production geometry", text)
+        self.assertIn("Do not generate isolated components", text)
         self.assertIn("Do not infer approval from silence", text)
-        self.assertIn("Do not begin Icon Composer or Xcode integration for an unapproved concept or an image-only request", text)
+        self.assertIn("Gate A — Lock visual approval", text)
 
-    def test_image_only_is_the_complete_default(self) -> None:
+    def test_shipping_apple_icon_uses_composer(self) -> None:
         text = (SKILL / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("Image-only — default", text)
-        self.assertIn("Do not create layers or open Icon Composer", text)
-        self.assertIn("This is the complete default workflow", text)
+        self.assertIn("Icon Composer as the final authoring route", text)
+        self.assertIn("Gate B — Decide whether the design can become a faithful Composer icon", text)
+        self.assertIn("Use the actual Apple app", text)
 
-    def test_layer_route_is_fidelity_gated(self) -> None:
+    def test_exploration_is_bounded_and_versioned(self) -> None:
         text = (SKILL / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("If fidelity is worse, stop and use route 1 or 2", text)
-        self.assertIn("Do not display or ship an inferior layered proof", text)
+        self.assertIn("one direction", text)
+        self.assertIn("two genuinely different directions", text)
+        self.assertIn("Do not automatically generate three directions", text)
+        self.assertIn("stable version ID", text)
+        self.assertTrue((SKILL / "assets" / "concept-review-template.md").is_file())
+
+    def test_composer_adaptation_returns_for_reapproval(self) -> None:
+        text = (SKILL / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("Composer-adapted production concept", text)
+        self.assertIn("return to Gate A", text)
+        self.assertIn("Never call degraded decomposition progress", text)
 
     def test_approval_template_defaults_to_locked_off(self) -> None:
         data = yaml.safe_load(
@@ -36,6 +45,8 @@ class ApprovalGateTests(unittest.TestCase):
         self.assertFalse(data["approval"]["explicitly_approved"])
         self.assertFalse(data["production_plan"]["authorized"])
         self.assertEqual("unselected", data["production_plan"]["delivery_route"])
+        self.assertEqual("unassessed", data["production_plan"]["composer_feasibility"])
+        self.assertTrue(data["production_plan"]["composer_adaptation_requires_reapproval"])
         self.assertIn("protected_invariants", data["design_lock"])
         self.assertIn("reapproval_triggers", data["production_plan"])
 
@@ -46,6 +57,8 @@ class ApprovalGateTests(unittest.TestCase):
         self.assertEqual("approved-production-authorized", data["approval"]["state"])
         self.assertIn("approved_concept", data["approval"])
         self.assertIn("sha256", data["approval"])
+        self.assertEqual(4, data["composer"]["max_groups"])
+        self.assertEqual(["default", "dark", "mono"], data["composer"]["appearances"])
 
 
 if __name__ == "__main__":
